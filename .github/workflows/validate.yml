@@ -5,15 +5,19 @@ on:
     paths:
       - 'data.js'
       - 'leaderboards.js'
+      - 'standards.js'
       - 'schema/**'
       - 'scripts/validate.mjs'
+      - 'scripts/refresh-status.mjs'
   push:
     branches: [main]
     paths:
       - 'data.js'
       - 'leaderboards.js'
+      - 'standards.js'
       - 'schema/**'
       - 'scripts/validate.mjs'
+      - 'scripts/refresh-status.mjs'
 
 jobs:
   validate:

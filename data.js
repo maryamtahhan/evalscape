@@ -99,8 +99,8 @@ const LANDSCAPE = {
       shortName: 'vLLM Serve',
       initials: 'vS',
       logo: 'logos/vllm-serve.png',
-      stars: 88868,
-      forks: 20587,
+      stars: 88879,
+      forks: 20593,
       description:
         'Online serving benchmark that measures TTFT, TPOT, inter-token latency, and request/token throughput under concurrent load against a running vLLM server.',
       category: 'inference',
@@ -124,8 +124,8 @@ const LANDSCAPE = {
       shortName: 'vLLM Throughput',
       initials: 'vT',
       logo: 'logos/vllm-throughput.png',
-      stars: 88868,
-      forks: 20587,
+      stars: 88879,
+      forks: 20593,
       description:
         'Offline static throughput benchmark measuring maximum tokens-per-second in batch processing mode, without request-level latency constraints.',
       category: 'inference',
@@ -170,7 +170,7 @@ const LANDSCAPE = {
       shortName: 'GuideLLM',
       initials: 'GL',
       logo: 'logos/guidellm.png',
-      stars: 1493,
+      stars: 1495,
       forks: 209,
       description:
         'LLM serving evaluation framework from Neural Magic / Red Hat that sweeps concurrency rates and measures performance under sustained load across text, image, audio, and video modalities — producing detailed latency-throughput profiles via synchronous, concurrent, throughput, constant, Poisson, and sweep load profiles.',
@@ -245,11 +245,13 @@ const LANDSCAPE = {
       stars: 1129,
       forks: 203,
       description:
-        "Anyscale's open-source framework for evaluating LLM API performance — sweeps concurrency levels, measures TTFT and inter-token latency, and produces comparative reports across providers and models.",
+        "Anyscale's open-source framework for evaluating LLM API performance — sweeps concurrency levels, measures TTFT and inter-token latency, and produces comparative reports across providers and models. Archived read-only in December 2025; use GuideLLM or AIPerf for ongoing API load testing.",
       category: 'inference',
       hardware: ['cpu', 'gpu'],
       types: ['online'],
       url: 'https://github.com/ray-project/llmperf',
+      status: 'archived',
+      lastReviewed: '2026-08-12',
       license: 'Apache 2.0',
       org: 'Anyscale / Ray',
       metrics: [
@@ -258,7 +260,7 @@ const LANDSCAPE = {
         'Output token throughput (tok/s)',
         'Error rate',
       ],
-      tags: ['anyscale', 'ray', 'api', 'concurrency'],
+      tags: ['anyscale', 'ray', 'api', 'concurrency', 'archived'],
     },
     {
       id: 'perf-analyzer',
@@ -387,7 +389,7 @@ const LANDSCAPE = {
       shortName: 'LM Eval',
       initials: 'LE',
       logo: 'logos/lm-eval.png',
-      stars: 13603,
+      stars: 13604,
       forks: 3477,
       description:
         "EleutherAI's unified framework for evaluating autoregressive LLMs across 200+ tasks — widely used for public leaderboards and reproducible benchmarks, supporting MMLU, HellaSwag, ARC, TruthfulQA, and many more.",
@@ -414,7 +416,7 @@ const LANDSCAPE = {
       stars: 19152,
       forks: 3052,
       description:
-        "OpenAI's framework for evaluating LLMs and LLM-powered systems — supports custom eval creation with model-graded, classification, and fuzzy-match eval types, and includes a large library of community-contributed evals.",
+        "OpenAI's framework for evaluating LLMs and LLM-powered systems — supports custom eval creation with model-graded, classification, and fuzzy-match eval types, and includes a large library of community-contributed evals. Community maintenance is limited; OpenAI's hosted Evals platform becomes read-only in October 2026 and shuts down in November 2026.",
       category: 'quality',
       hardware: ['cpu', 'gpu'],
       types: ['quality'],
@@ -486,11 +488,13 @@ const LANDSCAPE = {
       stars: 519,
       forks: 75,
       description:
-        'A challenging coding benchmark with 1,140 tasks requiring complex Python function completion using diverse libraries. Tests real-world software engineering skills beyond algorithmic problems, covering data science, ML, and system APIs.',
+        'A challenging coding benchmark with 1,140 tasks requiring complex Python function completion using diverse libraries. Tests real-world software engineering skills beyond algorithmic problems, covering data science, ML, and system APIs. Repository archived in July 2026; leaderboard results remain available for historical comparison.',
       category: 'code',
       hardware: ['cpu', 'gpu'],
       types: ['code'],
       url: 'https://github.com/bigcode-project/bigcodebench',
+      status: 'archived',
+      lastReviewed: '2026-08-12',
       license: 'Apache 2.0',
       org: 'BigCode Project',
       metrics: [
@@ -498,7 +502,7 @@ const LANDSCAPE = {
         'pass@1 (Instruct)',
         'Calibrated pass@1',
       ],
-      tags: ['bigcodebench', 'bigcode', 'function-completion', 'libraries'],
+      tags: ['bigcodebench', 'bigcode', 'function-completion', 'libraries', 'archived'],
     },
     {
       id: 'livecodebench',
@@ -578,7 +582,7 @@ const LANDSCAPE = {
       shortName: 'τ-bench',
       initials: 'τB',
       logo: 'logos/tau-bench.png',
-      stars: 1374,
+      stars: 1375,
       forks: 213,
       description:
         'Tool-agent evaluation benchmark from Sierra Research — simulates realistic customer service tasks where agents must call tools, follow policies, and handle multi-turn user interactions to measure real-world agentic reliability.',
@@ -627,7 +631,7 @@ const LANDSCAPE = {
       shortName: 'RAGAS',
       initials: 'RG',
       logo: 'logos/ragas.png',
-      stars: 15289,
+      stars: 15291,
       forks: 1623,
       description:
         'Reference-free evaluation framework for Retrieval-Augmented Generation pipelines — scores faithfulness, answer relevancy, context precision, and context recall without requiring human-annotated ground-truth labels.',
@@ -652,8 +656,8 @@ const LANDSCAPE = {
       shortName: 'DeepEval',
       initials: 'DV',
       logo: 'logos/deepeval.png',
-      stars: 17552,
-      forks: 1790,
+      stars: 17553,
+      forks: 1791,
       description:
         'Open-source LLM evaluation framework with 14+ metrics for RAG pipelines, LLM outputs, and agentic systems — including G-Eval, hallucination detection, answer relevancy, and custom LLM-as-judge evaluators.',
       category: 'rag',
@@ -700,7 +704,7 @@ const LANDSCAPE = {
       shortName: 'Promptfoo',
       initials: 'PF',
       logo: 'logos/promptfoo.png',
-      stars: 24161,
+      stars: 24167,
       forks: 2177,
       description:
         'Open-source LLM testing and red-teaming tool — runs prompt test suites with assertions, A/B tests prompts across providers, and includes automated red-teaming for safety vulnerabilities in LLM applications.',
@@ -726,7 +730,7 @@ const LANDSCAPE = {
       shortName: 'MTEB',
       initials: 'MT',
       logo: 'logos/mteb.png',
-      stars: 3389,
+      stars: 3390,
       forks: 664,
       description:
         'Massive Text Embedding Benchmark — evaluates embedding models across 8 task types (retrieval, classification, clustering, STS, summarization, …) and 100+ datasets in 112 languages.',
@@ -798,7 +802,7 @@ const LANDSCAPE = {
       shortName: 'Whisper',
       initials: 'WH',
       logo: 'logos/whisper-bench.png',
-      stars: 107137,
+      stars: 107144,
       forks: 13002,
       description:
         'Evaluation of OpenAI Whisper and Faster-Whisper models for speech-to-text accuracy (WER/CER) and real-time transcription throughput on diverse audio datasets.',
@@ -988,20 +992,23 @@ const LANDSCAPE = {
       shortName: 'VLoc Bench',
       initials: 'VL',
       description:
-        'Vulnerability Localization Benchmark from Cisco that evaluates LLM ability to detect and precisely localize security vulnerabilities in source code across multiple languages and CWE categories.',
+        'Cisco Foundation AI agentic benchmark with 500 real-world vulnerability localization tasks across six package ecosystems — models explore read-only Docker sandboxes via terminal commands to identify vulnerable files (Phase A) and confirm patched repos are clean (Phase B).',
       category: 'security',
       hardware: ['cpu', 'gpu'],
-      types: ['security'],
-      url: 'https://cisco-foundation-ai.github.io/vulnerability-localization-benchmark/',
-      license: '',
-      org: 'Cisco',
+      types: ['security', 'agent'],
+      url: 'https://github.com/cisco-foundation-ai/vulnerability-localization-benchmark',
+      docs: 'https://cisco-foundation-ai.github.io/vulnerability-localization-benchmark/',
+      license: 'Apache 2.0',
+      org: 'Cisco Foundation AI',
+      status: 'active',
+      lastReviewed: '2026-08-12',
       metrics: [
-        'Localization accuracy',
-        'F1 score',
-        'Precision / Recall',
+        'File F1 (localization)',
+        'True negative rate (verification)',
         'CWE coverage',
+        'Per-ecosystem breakdown',
       ],
-      tags: ['vloc', 'security', 'vulnerability', 'cisco'],
+      tags: ['vloc', 'security', 'vulnerability', 'cisco', 'agentic'],
     },
     {
       id: 'garak',
@@ -1009,8 +1016,8 @@ const LANDSCAPE = {
       shortName: 'Garak',
       initials: 'GK',
       logo: 'logos/garak.png',
-      stars: 8774,
-      forks: 1162,
+      stars: 8776,
+      forks: 1163,
       description:
         "NVIDIA's open-source LLM vulnerability scanner — probes models for prompt injection, jailbreaks, hallucinations, data leakage, and toxicity using a modular generator/probe/detector architecture.",
       category: 'security',
@@ -1187,7 +1194,7 @@ const LANDSCAPE = {
       license: 'MIT',
       org: 'LangChain',
       status: 'active',
-      lastReviewed: '2026-08-01',
+      lastReviewed: '2026-08-12',
       useCases: ['production-monitoring', 'pre-production', 'ci-friendly'],
       related: ['ragas', 'deepeval', 'arize-phoenix'],
       metrics: [
@@ -1204,8 +1211,8 @@ const LANDSCAPE = {
       shortName: 'Phoenix',
       initials: 'PX',
       logo: 'logos/arize-phoenix.png',
-      stars: 11012,
-      forks: 1053,
+      stars: 11014,
+      forks: 1054,
       description:
         'Open-source LLM observability and evaluation platform — traces RAG pipelines, runs eval experiments, and surfaces retrieval quality issues with embedding visualization.',
       category: 'rag',
@@ -1216,7 +1223,7 @@ const LANDSCAPE = {
       license: 'Apache 2.0',
       org: 'Arize AI',
       status: 'active',
-      lastReviewed: '2026-08-01',
+      lastReviewed: '2026-08-12',
       useCases: ['production-monitoring', 'pre-production', 'research'],
       related: ['ragas', 'trulens', 'langsmith'],
       metrics: [
@@ -1233,7 +1240,7 @@ const LANDSCAPE = {
       shortName: 'TRT-LLM',
       initials: 'TR',
       logo: 'logos/tensorrt-llm.png',
-      stars: 14367,
+      stars: 14369,
       forks: 2658,
       description:
         "NVIDIA's TensorRT-LLM benchmarking suite for measuring LLM inference throughput and latency on NVIDIA GPUs with optimized kernels, quantization, and multi-GPU serving.",
@@ -1245,7 +1252,7 @@ const LANDSCAPE = {
       license: 'Apache 2.0',
       org: 'NVIDIA',
       status: 'active',
-      lastReviewed: '2026-08-01',
+      lastReviewed: '2026-08-12',
       useCases: ['pre-production', 'ci-friendly', 'cost-analysis'],
       related: ['genai-perf', 'vllm-throughput', 'perf-analyzer'],
       metrics: [
@@ -1265,7 +1272,7 @@ const LANDSCAPE = {
       stars: 10886,
       forks: 1277,
       description:
-        "Hugging Face's production LLM serving stack with built-in benchmarking for throughput and latency — supports continuous batching, quantization, and OpenAI-compatible APIs.",
+        "Hugging Face's production LLM serving stack with built-in benchmarking for throughput and latency — supports continuous batching, quantization, and OpenAI-compatible APIs. Repository archived in March 2026 after entering maintenance mode; Hugging Face recommends vLLM or SGLang for new deployments.",
       category: 'inference',
       hardware: ['gpu'],
       types: ['online'],
@@ -1274,17 +1281,17 @@ const LANDSCAPE = {
       huggingface: 'https://huggingface.co/docs/text-generation-inference',
       license: 'Apache 2.0',
       org: 'Hugging Face',
-      status: 'active',
-      lastReviewed: '2026-08-01',
+      status: 'archived',
+      lastReviewed: '2026-08-12',
       useCases: ['pre-production', 'api-benchmarking'],
-      related: ['vllm-serve', 'llmperf', 'genai-perf'],
+      related: ['vllm-serve', 'genai-perf', 'genai-bench'],
       metrics: [
         'Request throughput (req/s)',
         'TTFT',
         'Token throughput (tok/s)',
         'Batch size efficiency',
       ],
-      tags: ['huggingface', 'tgi', 'serving', 'gpu'],
+      tags: ['huggingface', 'tgi', 'serving', 'gpu', 'archived'],
     },
     {
       id: 'wandb-weave',
@@ -1304,7 +1311,7 @@ const LANDSCAPE = {
       license: 'Apache 2.0',
       org: 'Weights & Biases',
       status: 'active',
-      lastReviewed: '2026-08-01',
+      lastReviewed: '2026-08-12',
       useCases: ['production-monitoring', 'research', 'ci-friendly'],
       related: ['langsmith', 'arize-phoenix', 'helm'],
       metrics: [
@@ -1615,8 +1622,8 @@ const TOOL_META = {
     adoption: 'research', datasets: ['Salad-Bench'],
   },
   'vloc-bench': {
-    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
-    adoption: 'research', datasets: ['VLoC-Bench'],
+    hosting: 'library', outputFormats: ['json'], modelScope: 'openai-compatible',
+    adoption: 'research', foundation: 'Cisco Foundation AI', datasets: ['VLoc Bench'],
   },
   'garak': {
     hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'openai-compatible',
@@ -1681,7 +1688,7 @@ const inferUseCases = (tool) => {
 
 LANDSCAPE.tools.forEach((t) => {
   t.status = t.status || 'active';
-  t.lastReviewed = t.lastReviewed || '2026-08-01';
+  t.lastReviewed = t.lastReviewed || '2026-08-12';
   t.useCases = t.useCases || inferUseCases(t);
   t.related = t.related || RELATED_MAP[t.id] || [];
   const meta = TOOL_META[t.id];

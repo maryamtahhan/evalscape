@@ -77,11 +77,11 @@ LANDSCAPE.standards = [
     shortName: 'OTel GenAI',
     initials: 'OT',
     description:
-      'CNCF OpenTelemetry specification for standardized GenAI telemetry — defines portable span attributes for LLM calls, embeddings, retrieval, and tool use, enabling consistent eval observability across platforms.',
+      'CNCF OpenTelemetry specification for standardized GenAI telemetry — defines portable span attributes for LLM calls, embeddings, retrieval, and tool use, enabling consistent eval observability across platforms. GenAI conventions remain in Development status and moved to a dedicated repository in June 2026.',
     category: 'quality',
     types: ['quality', 'rag', 'agent'],
     standardType: 'specification',
-    url: 'https://opentelemetry.io/docs/specs/semconv/gen-ai/',
+    url: 'https://github.com/open-telemetry/semantic-conventions-genai',
     urlLabel: 'View on OpenTelemetry',
     org: 'OpenTelemetry / CNCF',
     year: 2025,

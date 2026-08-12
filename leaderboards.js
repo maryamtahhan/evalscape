@@ -206,15 +206,15 @@ LANDSCAPE.leaderboards = [
     initials: 'BC',
     logo: 'logos/bigcodebench-leaderboard.png',
     description:
-      'Leaderboard for BigCodeBench — evaluates LLMs on 1,140 diverse Python programming tasks requiring complex library usage and multi-step reasoning.',
+      'Leaderboard for BigCodeBench — evaluates LLMs on 1,140 diverse Python programming tasks requiring complex library usage and multi-step reasoning. Evaluation repository archived in July 2026; historical rankings remain available.',
     category: 'code',
     types: ['code'],
     url: 'https://bigcode-bench.github.io/',
     org: 'BigCode Project',
     relatedTools: ['bigcodebench', 'humaneval'],
     metrics: ['Pass@1', 'Complete code', 'Self-repair'],
-    tags: ['python', 'library-use', 'complex-tasks'],
-    status: 'active',
+    tags: ['python', 'library-use', 'complex-tasks', 'archived'],
+    status: 'archived',
     lastReviewed: '2026-08-12',
   },
 

@@ -17,6 +17,7 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 - **Tool enrichment** — deployment model, adoption signals, output formats, datasets, and model compatibility in each detail modal
 - **Related tools** and extra resource links (docs, papers, Hugging Face) in each detail modal
 - **Auto-refreshed GitHub stats** via weekly GitHub Action
+- **Archived status sync** from GitHub API weekly (repos marked read-only are flagged automatically)
 - **Schema validation** in CI for contributor data quality
 
 ---
@@ -71,6 +72,18 @@ To manually refresh GitHub star counts:
 
 ```bash
 npm run refresh-stars
+```
+
+To sync archived status from GitHub (tools whose repos are read-only):
+
+```bash
+npm run refresh-status
+```
+
+Both run together via:
+
+```bash
+npm run refresh-data
 ```
 
 ---
@@ -132,7 +145,7 @@ npm run refresh-stars
 | `hw` | `?hw=gpu` | Hardware filter |
 | `type` | `?type=rag` | Benchmark type |
 | `useCase` | `?useCase=ci-friendly` | Use case filter |
-| `status` | `?status=active` | Tool status |
+| `status` | `?status=archived` | Tool status (`current` hides archived by default; use `all` to show everything) |
 | `sort` | `?sort=stars` | Sort order |
 | `view` | `?view=dense` | View mode |
 | `section` | `?section=leaderboards` | Show leaderboards instead of tools |
@@ -183,7 +196,7 @@ The site deploys automatically to GitHub Pages via GitHub Actions on every push 
 
 **Settings → Pages → Source → GitHub Actions**
 
-A separate workflow validates `data.js` on every PR, and another refreshes GitHub star counts weekly.
+A separate workflow validates `data.js` on every PR, and another refreshes GitHub star counts, archived status, and logos weekly (Monday 06:00 UTC).
 
 ---
 

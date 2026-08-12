@@ -5,7 +5,9 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "refresh-stars": "node scripts/refresh-stars.mjs",
-    "refresh-logos": "node scripts/refresh-logos.mjs"
+    "refresh-status": "node scripts/refresh-status.mjs",
+    "refresh-logos": "node scripts/refresh-logos.mjs",
+    "refresh-data": "npm run refresh-stars && npm run refresh-status"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

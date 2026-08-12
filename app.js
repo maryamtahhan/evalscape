@@ -79,7 +79,7 @@ const state = {
   hw:       'all',
   type:     'all',
   useCase:  'all',
-  status:   'all',
+  status:   'current',
   standardType: 'all',
   search:   '',
   view:     'comfy',
@@ -107,6 +107,18 @@ const isToolsSection = () => state.section === 'tools';
 const isLeaderboardsSection = () => state.section === 'leaderboards';
 const isStandardsSection = () => state.section === 'standards';
 
+const matchesStatusFilter = (item) => {
+  const s = item.status || 'active';
+  switch (state.status) {
+    case 'all': return true;
+    case 'current': return s !== 'archived';
+    case 'active': return s === 'active';
+    case 'experimental': return s === 'experimental';
+    case 'archived': return s === 'archived';
+    default: return true;
+  }
+};
+
 const isFiltering = () => {
   if (isToolsSection() && state.hw !== 'all') return true;
   if (isStandardsSection() && state.standardType !== 'all') return true;
@@ -127,7 +139,7 @@ const isVisible = (tool) => {
   }
   if (state.type !== 'all' && !tool.types.includes(state.type)) return false;
   if (state.useCase !== 'all' && !(tool.useCases || []).includes(state.useCase)) return false;
-  if (state.status !== 'all' && tool.status !== state.status) return false;
+  if (!matchesStatusFilter(tool)) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
     const haystack = [
@@ -144,7 +156,7 @@ const isVisible = (tool) => {
 const isLeaderboardVisible = (lb) => {
   if (state.type !== 'all' && !lb.types.includes(state.type)) return false;
   if (state.useCase !== 'all' && !(lb.useCases || []).includes(state.useCase)) return false;
-  if (state.status !== 'all' && lb.status !== state.status) return false;
+  if (!matchesStatusFilter(lb)) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
     const haystack = [
@@ -159,7 +171,7 @@ const isLeaderboardVisible = (lb) => {
 const isStandardVisible = (std) => {
   if (state.standardType !== 'all' && std.standardType !== state.standardType) return false;
   if (state.type !== 'all' && !std.types.includes(state.type)) return false;
-  if (state.status !== 'all' && std.status !== state.status) return false;
+  if (!matchesStatusFilter(std)) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
     const haystack = [
@@ -220,7 +232,7 @@ const syncUrl = () => {
   else                          params.delete('type');
   if (state.useCase !== 'all')  params.set('useCase', state.useCase);
   else                          params.delete('useCase');
-  if (state.status !== 'all')   params.set('status', state.status);
+  if (state.status !== 'current') params.set('status', state.status);
   else                          params.delete('status');
   if (state.search)             params.set('q', state.search);
   else                          params.delete('q');
@@ -1262,6 +1274,7 @@ const renderWizard = () => {
       </div>`;
   } else {
     const results = LANDSCAPE.tools
+      .filter((t) => t.status !== 'archived')
       .map((t) => ({ tool: t, score: scoreToolForWizard(t, wizardAnswers.goal, wizardAnswers.context, wizardAnswers.hw) }))
       .filter((r) => r.score > 0)
       .sort((a, b) => b.score - a.score)
@@ -1385,7 +1398,7 @@ const clearFilters = () => {
   state.hw = 'all';
   state.type = 'all';
   state.useCase = 'all';
-  state.status = 'all';
+  state.status = 'current';
   state.standardType = 'all';
   state.search = '';
   applyFilterUI();
