@@ -478,7 +478,7 @@ const standardCardDense = (std, cat) => `
   </div>`;
 
 const catEmoji = (id) => ({
-  inference: '⚡', 'cpu-inference': '🖥️', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
+  inference: '⚡', 'benchmark-orchestration': '🔁', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
   embedding: '🔢', audio: '🎙️', safety: '🛡️', multimodal: '🖼️', security: '🔒',
 }[id] || '📊');
 
