@@ -91,8 +91,8 @@ const LANDSCAPE = {
       shortName: 'vLLM Serve',
       initials: 'vS',
       logo: 'logos/vllm-serve.png',
-      stars: 88861,
-      forks: 20585,
+      stars: 88868,
+      forks: 20587,
       description:
         'Online serving benchmark that measures TTFT, TPOT, inter-token latency, and request/token throughput under concurrent load against a running vLLM server.',
       category: 'inference',
@@ -116,8 +116,8 @@ const LANDSCAPE = {
       shortName: 'vLLM Throughput',
       initials: 'vT',
       logo: 'logos/vllm-throughput.png',
-      stars: 88861,
-      forks: 20585,
+      stars: 88868,
+      forks: 20587,
       description:
         'Offline static throughput benchmark measuring maximum tokens-per-second in batch processing mode, without request-level latency constraints.',
       category: 'inference',
@@ -309,7 +309,7 @@ const LANDSCAPE = {
       shortName: 'LM Eval',
       initials: 'LE',
       logo: 'logos/lm-eval.png',
-      stars: 13602,
+      stars: 13603,
       forks: 3477,
       description:
         "EleutherAI's unified framework for evaluating autoregressive LLMs across 200+ tasks — the canonical tool powering the Hugging Face Open LLM Leaderboard, supporting MMLU, HellaSwag, ARC, TruthfulQA, and many more.",
@@ -549,8 +549,8 @@ const LANDSCAPE = {
       shortName: 'RAGAS',
       initials: 'RG',
       logo: 'logos/ragas.png',
-      stars: 15288,
-      forks: 1624,
+      stars: 15289,
+      forks: 1623,
       description:
         'Reference-free evaluation framework for Retrieval-Augmented Generation pipelines — scores faithfulness, answer relevancy, context precision, and context recall without requiring human-annotated ground-truth labels.',
       category: 'rag',
@@ -574,7 +574,7 @@ const LANDSCAPE = {
       shortName: 'DeepEval',
       initials: 'DV',
       logo: 'logos/deepeval.png',
-      stars: 17551,
+      stars: 17552,
       forks: 1790,
       description:
         'Open-source LLM evaluation framework with 14+ metrics for RAG pipelines, LLM outputs, and agentic systems — including G-Eval, hallucination detection, answer relevancy, and custom LLM-as-judge evaluators.',
@@ -622,7 +622,7 @@ const LANDSCAPE = {
       shortName: 'Promptfoo',
       initials: 'PF',
       logo: 'logos/promptfoo.png',
-      stars: 24158,
+      stars: 24161,
       forks: 2177,
       description:
         'Open-source LLM testing and red-teaming tool — runs prompt test suites with assertions, A/B tests prompts across providers, and includes automated red-teaming for safety vulnerabilities in LLM applications.',
@@ -720,7 +720,7 @@ const LANDSCAPE = {
       shortName: 'Whisper',
       initials: 'WH',
       logo: 'logos/whisper-bench.png',
-      stars: 107132,
+      stars: 107137,
       forks: 13002,
       description:
         'Evaluation of OpenAI Whisper and Faster-Whisper models for speech-to-text accuracy (WER/CER) and real-time transcription throughput on diverse audio datasets.',
@@ -932,7 +932,7 @@ const LANDSCAPE = {
       initials: 'GK',
       logo: 'logos/garak.png',
       stars: 8774,
-      forks: 1161,
+      forks: 1162,
       description:
         "NVIDIA's open-source LLM vulnerability scanner — probes models for prompt injection, jailbreaks, hallucinations, data leakage, and toxicity using a modular generator/probe/detector architecture.",
       category: 'security',
@@ -1097,8 +1097,8 @@ const LANDSCAPE = {
       shortName: 'LangSmith',
       initials: 'LS',
       logo: 'logos/langsmith.png',
-      stars: 0,
-      forks: 0,
+      stars: 1014,
+      forks: 274,
       description:
         'LangChain platform for tracing, evaluating, and monitoring LLM applications in development and production — supports dataset-based evals, online feedback, and regression testing.',
       category: 'quality',
@@ -1126,8 +1126,8 @@ const LANDSCAPE = {
       shortName: 'Phoenix',
       initials: 'PX',
       logo: 'logos/arize-phoenix.png',
-      stars: 5200,
-      forks: 420,
+      stars: 11012,
+      forks: 1053,
       description:
         'Open-source LLM observability and evaluation platform — traces RAG pipelines, runs eval experiments, and surfaces retrieval quality issues with embedding visualization.',
       category: 'rag',
@@ -1155,8 +1155,8 @@ const LANDSCAPE = {
       shortName: 'TRT-LLM',
       initials: 'TR',
       logo: 'logos/tensorrt-llm.png',
-      stars: 10200,
-      forks: 1500,
+      stars: 14367,
+      forks: 2658,
       description:
         "NVIDIA's TensorRT-LLM benchmarking suite for measuring LLM inference throughput and latency on NVIDIA GPUs with optimized kernels, quantization, and multi-GPU serving.",
       category: 'inference',
@@ -1184,8 +1184,8 @@ const LANDSCAPE = {
       shortName: 'TGI',
       initials: 'TG',
       logo: 'logos/tgi-bench.png',
-      stars: 9200,
-      forks: 980,
+      stars: 10886,
+      forks: 1277,
       description:
         "Hugging Face's production LLM serving stack with built-in benchmarking for throughput and latency — supports continuous batching, quantization, and OpenAI-compatible APIs.",
       category: 'inference',
@@ -1214,8 +1214,8 @@ const LANDSCAPE = {
       shortName: 'W&B Weave',
       initials: 'WB',
       logo: 'logos/wandb-weave.png',
-      stars: 0,
-      forks: 0,
+      stars: 1115,
+      forks: 161,
       description:
         'W&B toolkit for LLM tracing, evaluation, and experiment tracking — run scorers on datasets, compare model versions, and monitor production LLM apps.',
       category: 'quality',
