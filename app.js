@@ -68,9 +68,11 @@ const getLeaderboard = (id) => (LANDSCAPE.leaderboards || []).find((lb) => lb.id
 const getLeaderboards = () => LANDSCAPE.leaderboards || [];
 const isToolsSection = () => state.section === 'tools';
 
-const isFiltering = () =>
-  state.hw !== 'all' || state.type !== 'all' || state.useCase !== 'all' ||
-  state.status !== 'all' || !!state.search;
+const isFiltering = () => {
+  if (isToolsSection() && state.hw !== 'all') return true;
+  return state.type !== 'all' || state.useCase !== 'all' ||
+    state.status !== 'all' || !!state.search;
+};
 
 const isVisible = (tool) => {
   if (state.hw !== 'all') {
@@ -520,7 +522,7 @@ const toggleCompare = (toolId) => {
   renderCompareBar();
   syncUrl();
   if ($('#modal-backdrop').hidden === false) openModal(toolId);
-  else renderCards();
+  else renderContent();
 };
 
 const renderCompareBar = () => {
@@ -725,9 +727,6 @@ const openModal = (toolId) => {
   document.body.classList.add('no-scroll');
   setUrlTool(toolId);
   $('#modal-close').focus();
-};
-
-  else renderCards();
 };
 
 const relatedLeaderboardTools = (lb) => {
@@ -1080,7 +1079,7 @@ const init = () => {
   $('#btn-compare-clear').addEventListener('click', () => {
     state.compare = [];
     renderCompareBar();
-    renderCards();
+    renderContent();
     syncUrl();
   });
 
