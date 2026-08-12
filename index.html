@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A comprehensive landscape of AI model benchmarking tools and frameworks — inference, embedding, audio, and security.">
-  <title>AI Benchmarking Landscape</title>
+  <meta name="description" content="Evalscape — a searchable landscape of AI model benchmarking tools and evaluation frameworks.">
+  <title>Evalscape — AI Benchmarking Landscape</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://maryamtahhan.github.io/evalscape/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Evalscape — AI Benchmarking Landscape">
+  <meta property="og:description" content="Searchable map of AI benchmarking tools — inference, RAG, agents, safety, and more.">
+  <meta property="og:url" content="https://maryamtahhan.github.io/evalscape/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Evalscape — AI Benchmarking Landscape">
+  <meta name="twitter:description" content="Searchable map of AI benchmarking tools — inference, RAG, agents, safety, and more.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════════════════════
-       HEADER
-       ══════════════════════════════════════════════════════════ -->
   <header class="site-header">
     <div class="header-inner">
 
@@ -23,8 +29,8 @@
           <span class="sq sq-4"></span>
         </div>
         <div class="brand-text">
-          <div class="brand-title">AI Benchmarking Landscape</div>
-          <div class="brand-sub">Comprehensive map of AI model benchmarking tools &amp; frameworks</div>
+          <div class="brand-title">Evalscape</div>
+          <div class="brand-sub">AI benchmarking tools &amp; evaluation frameworks</div>
         </div>
       </div>
 
@@ -36,9 +42,18 @@
           <input type="text" id="search" placeholder="Search tools…" autocomplete="off" aria-label="Search tools">
         </div>
 
+        <label class="sort-wrap">
+          <span class="visually-hidden">Sort by</span>
+          <select id="sort" aria-label="Sort tools">
+            <option value="default">Sort: Default</option>
+            <option value="stars">Sort: Stars</option>
+            <option value="name">Sort: Name</option>
+            <option value="reviewed">Sort: Recently reviewed</option>
+          </select>
+        </label>
+
         <div class="view-group" role="group" aria-label="View mode">
           <button class="view-btn active" id="btn-comfy" aria-pressed="true" title="Comfortable view">
-            <!-- 2×2 grid icon -->
             <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14" aria-hidden="true">
               <rect x="1" y="1" width="6" height="6" rx="1.5"/>
               <rect x="9" y="1" width="6" height="6" rx="1.5"/>
@@ -47,7 +62,6 @@
             </svg>
           </button>
           <button class="view-btn" id="btn-dense" aria-pressed="false" title="Dense view">
-            <!-- 3×3 grid icon -->
             <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14" aria-hidden="true">
               <rect x="1"   y="1"   width="3.5" height="3.5" rx="1"/>
               <rect x="6.25" y="1"   width="3.5" height="3.5" rx="1"/>
@@ -62,32 +76,28 @@
           </button>
         </div>
 
+        <button class="header-btn" id="btn-wizard" type="button">Find a tool</button>
         <span class="tool-count" id="tool-count" aria-live="polite"></span>
       </div>
     </div>
   </header>
 
-  <!-- ══════════════════════════════════════════════════════════
-       PAGE LAYOUT
-       ══════════════════════════════════════════════════════════ -->
   <div class="page-layout">
 
-    <!-- ─── Sidebar ─────────────────────────────────────────── -->
     <aside class="sidebar" aria-label="Filters">
       <div class="sidebar-inner">
 
-        <!-- Hardware filter -->
         <section class="filter-section">
           <h2 class="filter-heading">Hardware</h2>
           <ul class="filter-list" role="radiogroup" aria-label="Hardware filter">
-            <li class="filter-item active" data-group="hw" data-value="all"  role="radio" aria-checked="true"  tabindex="0">
+            <li class="filter-item active" data-group="hw" data-value="all" role="radio" aria-checked="true" tabindex="0">
               <span class="filter-dot" aria-hidden="true"></span>All Hardware
             </li>
-            <li class="filter-item" data-group="hw" data-value="cpu"  role="radio" aria-checked="false" tabindex="0">
-              <span class="filter-dot hw-cpu"  aria-hidden="true"></span>CPU
+            <li class="filter-item" data-group="hw" data-value="cpu" role="radio" aria-checked="false" tabindex="0">
+              <span class="filter-dot hw-cpu" aria-hidden="true"></span>CPU
             </li>
-            <li class="filter-item" data-group="hw" data-value="gpu"  role="radio" aria-checked="false" tabindex="0">
-              <span class="filter-dot hw-gpu"  aria-hidden="true"></span>GPU
+            <li class="filter-item" data-group="hw" data-value="gpu" role="radio" aria-checked="false" tabindex="0">
+              <span class="filter-dot hw-gpu" aria-hidden="true"></span>GPU
             </li>
             <li class="filter-item" data-group="hw" data-value="both" role="radio" aria-checked="false" tabindex="0">
               <span class="filter-dot hw-both" aria-hidden="true"></span>CPU + GPU
@@ -95,15 +105,14 @@
           </ul>
         </section>
 
-        <!-- Benchmark type filter -->
         <section class="filter-section">
           <h2 class="filter-heading">Benchmark Type</h2>
           <ul class="filter-list" aria-label="Benchmark type filter">
             <li class="filter-item active" data-group="type" data-value="all" tabindex="0">
-              <span class="filter-dot"           aria-hidden="true"></span>All Types
+              <span class="filter-dot" aria-hidden="true"></span>All Types
             </li>
             <li class="filter-item" data-group="type" data-value="online" tabindex="0">
-              <span class="filter-dot t-online"  aria-hidden="true"></span>Online Serving
+              <span class="filter-dot t-online" aria-hidden="true"></span>Online Serving
             </li>
             <li class="filter-item" data-group="type" data-value="offline" tabindex="0">
               <span class="filter-dot t-offline" aria-hidden="true"></span>Offline / Static
@@ -112,39 +121,60 @@
               <span class="filter-dot t-quality" aria-hidden="true"></span>LLM Quality
             </li>
             <li class="filter-item" data-group="type" data-value="code" tabindex="0">
-              <span class="filter-dot t-code"    aria-hidden="true"></span>Code Generation
+              <span class="filter-dot t-code" aria-hidden="true"></span>Code Generation
             </li>
             <li class="filter-item" data-group="type" data-value="agent" tabindex="0">
-              <span class="filter-dot t-agent"   aria-hidden="true"></span>Agent / Tool Use
+              <span class="filter-dot t-agent" aria-hidden="true"></span>Agent / Tool Use
             </li>
             <li class="filter-item" data-group="type" data-value="rag" tabindex="0">
-              <span class="filter-dot t-rag"     aria-hidden="true"></span>RAG / Retrieval
+              <span class="filter-dot t-rag" aria-hidden="true"></span>RAG / Retrieval
             </li>
             <li class="filter-item" data-group="type" data-value="embedding" tabindex="0">
-              <span class="filter-dot t-emb"     aria-hidden="true"></span>Embedding
+              <span class="filter-dot t-emb" aria-hidden="true"></span>Embedding
             </li>
             <li class="filter-item" data-group="type" data-value="audio" tabindex="0">
-              <span class="filter-dot t-audio"   aria-hidden="true"></span>Audio / Speech
+              <span class="filter-dot t-audio" aria-hidden="true"></span>Audio / Speech
             </li>
             <li class="filter-item" data-group="type" data-value="safety" tabindex="0">
-              <span class="filter-dot t-safety"  aria-hidden="true"></span>Safety & Alignment
+              <span class="filter-dot t-safety" aria-hidden="true"></span>Safety &amp; Alignment
             </li>
             <li class="filter-item" data-group="type" data-value="multimodal" tabindex="0">
-              <span class="filter-dot t-mm"      aria-hidden="true"></span>Multimodal
+              <span class="filter-dot t-mm" aria-hidden="true"></span>Multimodal
             </li>
             <li class="filter-item" data-group="type" data-value="security" tabindex="0">
-              <span class="filter-dot t-sec"     aria-hidden="true"></span>Security
+              <span class="filter-dot t-sec" aria-hidden="true"></span>Security
             </li>
           </ul>
         </section>
 
-        <!-- Category jump-links -->
+        <section class="filter-section">
+          <h2 class="filter-heading">Use Case</h2>
+          <ul class="filter-list" id="usecase-filters" aria-label="Use case filter"></ul>
+        </section>
+
+        <section class="filter-section">
+          <h2 class="filter-heading">Status</h2>
+          <ul class="filter-list" role="radiogroup" aria-label="Status filter">
+            <li class="filter-item active" data-group="status" data-value="all" role="radio" aria-checked="true" tabindex="0">
+              <span class="filter-dot" aria-hidden="true"></span>All
+            </li>
+            <li class="filter-item" data-group="status" data-value="active" role="radio" aria-checked="false" tabindex="0">
+              <span class="filter-dot status-active" aria-hidden="true"></span>Active
+            </li>
+            <li class="filter-item" data-group="status" data-value="experimental" role="radio" aria-checked="false" tabindex="0">
+              <span class="filter-dot status-experimental" aria-hidden="true"></span>Experimental
+            </li>
+            <li class="filter-item" data-group="status" data-value="archived" role="radio" aria-checked="false" tabindex="0">
+              <span class="filter-dot status-archived" aria-hidden="true"></span>Archived
+            </li>
+          </ul>
+        </section>
+
         <section class="filter-section">
           <h2 class="filter-heading">Categories</h2>
           <ul class="cat-nav" id="cat-nav" aria-label="Jump to category"></ul>
         </section>
 
-        <!-- Stats -->
         <footer class="sidebar-footer">
           <div class="stat-row">
             <div class="stat">
@@ -161,28 +191,61 @@
       </div>
     </aside>
 
-    <!-- ─── Main ─────────────────────────────────────────────── -->
-    <main class="main-content" id="main-content" aria-label="Benchmarking tools">
-      <!-- Rendered by app.js -->
-    </main>
+    <main class="main-content" id="main-content" aria-label="Benchmarking tools"></main>
 
-  </div><!-- .page-layout -->
+    <div class="no-results" id="no-results" hidden>
+      <div class="no-results-icon" aria-hidden="true">🔍</div>
+      <p>No tools match your filters.</p>
+      <button class="header-btn" id="btn-clear-filters" type="button">Clear filters</button>
+    </div>
 
-  <!-- ══════════════════════════════════════════════════════════
-       MODAL
-       ══════════════════════════════════════════════════════════ -->
+  </div>
+
+  <!-- Tool detail modal -->
   <div class="modal-backdrop" id="modal-backdrop" hidden>
-    <div class="modal-box"
-         id="modal-box"
-         role="dialog"
-         aria-modal="true"
-         aria-labelledby="modal-title">
+    <div class="modal-box" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal-close-btn" id="modal-close" aria-label="Close dialog">
         <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
           <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
         </svg>
       </button>
-      <div id="modal-inner"><!-- JS-rendered --></div>
+      <div id="modal-inner"></div>
+    </div>
+  </div>
+
+  <!-- Wizard modal -->
+  <div class="modal-backdrop" id="wizard-backdrop" hidden>
+    <div class="modal-box wizard-box" id="wizard-box" role="dialog" aria-modal="true" aria-labelledby="wizard-title">
+      <button class="modal-close-btn" id="wizard-close" aria-label="Close wizard">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
+          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
+        </svg>
+      </button>
+      <div id="wizard-inner"></div>
+    </div>
+  </div>
+
+  <!-- Compare modal -->
+  <div class="modal-backdrop" id="compare-backdrop" hidden>
+    <div class="modal-box compare-box" id="compare-box" role="dialog" aria-modal="true" aria-labelledby="compare-title">
+      <button class="modal-close-btn" id="compare-close" aria-label="Close comparison">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
+          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
+        </svg>
+      </button>
+      <div id="compare-inner"></div>
+    </div>
+  </div>
+
+  <!-- Compare bar -->
+  <div class="compare-bar" id="compare-bar" hidden>
+    <div class="compare-bar-inner">
+      <span class="compare-bar-label" id="compare-bar-label">0 tools selected</span>
+      <div class="compare-bar-chips" id="compare-bar-chips"></div>
+      <div class="compare-bar-actions">
+        <button class="header-btn" id="btn-compare-open" type="button" disabled>Compare</button>
+        <button class="header-btn header-btn-ghost" id="btn-compare-clear" type="button">Clear</button>
+      </div>
     </div>
   </div>
 

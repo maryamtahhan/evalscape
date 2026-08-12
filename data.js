@@ -1089,5 +1089,186 @@ const LANDSCAPE = {
       ],
       tags: ['seed-bench', 'tencent', 'multimodal', 'video'],
     },
+
+    // ── Production & Observability ─────────────────────────────────────────
+    {
+      id: 'langsmith',
+      name: 'LangSmith',
+      shortName: 'LangSmith',
+      initials: 'LS',
+      stars: 0,
+      forks: 0,
+      description:
+        'LangChain platform for tracing, evaluating, and monitoring LLM applications in development and production — supports dataset-based evals, online feedback, and regression testing.',
+      category: 'quality',
+      hardware: ['cpu'],
+      types: ['quality', 'rag', 'agent'],
+      url: 'https://github.com/langchain-ai/langsmith-sdk',
+      docs: 'https://docs.smith.langchain.com',
+      license: 'MIT',
+      org: 'LangChain',
+      status: 'active',
+      lastReviewed: '2026-08-01',
+      useCases: ['production-monitoring', 'pre-production', 'ci-friendly'],
+      related: ['ragas', 'deepeval', 'arize-phoenix'],
+      metrics: [
+        'Evaluation run accuracy',
+        'Latency traces',
+        'Cost per trace',
+        'Human feedback scores',
+      ],
+      tags: ['langchain', 'observability', 'tracing', 'production'],
+    },
+    {
+      id: 'arize-phoenix',
+      name: 'Arize Phoenix',
+      shortName: 'Phoenix',
+      initials: 'PX',
+      stars: 5200,
+      forks: 420,
+      description:
+        'Open-source LLM observability and evaluation platform — traces RAG pipelines, runs eval experiments, and surfaces retrieval quality issues with embedding visualization.',
+      category: 'rag',
+      hardware: ['cpu'],
+      types: ['rag', 'quality', 'embedding'],
+      url: 'https://github.com/Arize-ai/phoenix',
+      docs: 'https://docs.arize.com/phoenix',
+      license: 'Apache 2.0',
+      org: 'Arize AI',
+      status: 'active',
+      lastReviewed: '2026-08-01',
+      useCases: ['production-monitoring', 'pre-production', 'research'],
+      related: ['ragas', 'trulens', 'langsmith'],
+      metrics: [
+        'Retrieval precision / recall',
+        'Embedding drift',
+        'Latency percentiles',
+        'Eval experiment scores',
+      ],
+      tags: ['arize', 'observability', 'rag', 'tracing'],
+    },
+    {
+      id: 'tensorrt-llm',
+      name: 'TensorRT-LLM Benchmarks',
+      shortName: 'TRT-LLM',
+      initials: 'TR',
+      stars: 10200,
+      forks: 1500,
+      description:
+        "NVIDIA's TensorRT-LLM benchmarking suite for measuring LLM inference throughput and latency on NVIDIA GPUs with optimized kernels, quantization, and multi-GPU serving.",
+      category: 'inference',
+      hardware: ['gpu'],
+      types: ['online', 'offline'],
+      url: 'https://github.com/NVIDIA/TensorRT-LLM/tree/main/benchmarks',
+      docs: 'https://nvidia.github.io/TensorRT-LLM',
+      license: 'Apache 2.0',
+      org: 'NVIDIA',
+      status: 'active',
+      lastReviewed: '2026-08-01',
+      useCases: ['pre-production', 'ci-friendly', 'cost-analysis'],
+      related: ['genai-perf', 'vllm-throughput', 'perf-analyzer'],
+      metrics: [
+        'Token throughput (tok/s)',
+        'TTFT',
+        'Memory usage',
+        'Cost per million tokens',
+      ],
+      tags: ['nvidia', 'tensorrt', 'gpu', 'inference'],
+    },
+    {
+      id: 'tgi-bench',
+      name: 'Text Generation Inference',
+      shortName: 'TGI',
+      initials: 'TG',
+      stars: 9200,
+      forks: 980,
+      description:
+        "Hugging Face's production LLM serving stack with built-in benchmarking for throughput and latency — supports continuous batching, quantization, and OpenAI-compatible APIs.",
+      category: 'inference',
+      hardware: ['gpu'],
+      types: ['online'],
+      url: 'https://github.com/huggingface/text-generation-inference',
+      docs: 'https://huggingface.co/docs/text-generation-inference',
+      huggingface: 'https://huggingface.co/docs/text-generation-inference',
+      license: 'Apache 2.0',
+      org: 'Hugging Face',
+      status: 'active',
+      lastReviewed: '2026-08-01',
+      useCases: ['pre-production', 'api-benchmarking'],
+      related: ['vllm-serve', 'llmperf', 'genai-perf'],
+      metrics: [
+        'Request throughput (req/s)',
+        'TTFT',
+        'Token throughput (tok/s)',
+        'Batch size efficiency',
+      ],
+      tags: ['huggingface', 'tgi', 'serving', 'gpu'],
+    },
+    {
+      id: 'wandb-weave',
+      name: 'Weights & Biases Weave',
+      shortName: 'W&B Weave',
+      initials: 'WB',
+      stars: 0,
+      forks: 0,
+      description:
+        'W&B toolkit for LLM tracing, evaluation, and experiment tracking — run scorers on datasets, compare model versions, and monitor production LLM apps.',
+      category: 'quality',
+      hardware: ['cpu'],
+      types: ['quality', 'rag', 'agent'],
+      url: 'https://github.com/wandb/weave',
+      docs: 'https://wandb.github.io/weave',
+      license: 'Apache 2.0',
+      org: 'Weights & Biases',
+      status: 'active',
+      lastReviewed: '2026-08-01',
+      useCases: ['production-monitoring', 'research', 'ci-friendly'],
+      related: ['langsmith', 'arize-phoenix', 'helm'],
+      metrics: [
+        'Scorer accuracy',
+        'Latency traces',
+        'Experiment comparisons',
+        'Regression detection',
+      ],
+      tags: ['wandb', 'weave', 'observability', 'evaluation'],
+    },
   ],
 };
+
+/* ── Enrichment: defaults, use cases, and related tools ───────────────── */
+const RELATED_MAP = {
+  'vllm-serve':       ['guidellm', 'llmperf', 'genai-perf', 'tgi-bench'],
+  'vllm-throughput':  ['tensorrt-llm', 'perf-analyzer'],
+  'guidellm':         ['vllm-serve', 'llmperf', 'genai-perf'],
+  'llmperf':          ['vllm-serve', 'guidellm', 'tgi-bench'],
+  'genai-perf':       ['vllm-serve', 'perf-analyzer', 'tensorrt-llm'],
+  'helm':             ['lm-eval', 'openai-evals'],
+  'lm-eval':          ['helm', 'openai-evals'],
+  'humaneval':        ['bigcodebench', 'livecodebench'],
+  'livecodebench':    ['humaneval', 'swe-bench'],
+  'swe-bench':        ['livecodebench', 'humaneval'],
+  'ragas':            ['deepeval', 'trulens', 'arize-phoenix'],
+  'deepeval':         ['ragas', 'trulens'],
+  'trulens':          ['ragas', 'deepeval', 'arize-phoenix'],
+  'mteb':             ['beir', 'air-bench-retrieval'],
+  'beir':             ['mteb', 'air-bench-retrieval'],
+  'truthfulqa':       ['simplesafetytests', 'strongreject'],
+};
+
+const inferUseCases = (tool) => {
+  const cases = [];
+  if (tool.types.includes('online')) cases.push('pre-production', 'api-benchmarking');
+  if (tool.types.includes('offline')) cases.push('ci-friendly');
+  if (['quality', 'code', 'agent', 'rag', 'embedding', 'multimodal', 'safety', 'security'].some((t) => tool.types.includes(t))) {
+    cases.push('leaderboard', 'research');
+  }
+  if (tool.tags?.some((t) => ['cost', 'serving', 'concurrency'].includes(t))) cases.push('cost-analysis');
+  return [...new Set(cases)];
+};
+
+LANDSCAPE.tools.forEach((t) => {
+  t.status = t.status || 'active';
+  t.lastReviewed = t.lastReviewed || '2026-08-01';
+  t.useCases = t.useCases || inferUseCases(t);
+  t.related = t.related || RELATED_MAP[t.id] || [];
+});

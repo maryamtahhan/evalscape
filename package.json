@@ -1,0 +1,13 @@
+{
+  "name": "evalscape",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "refresh-stars": "node scripts/refresh-stars.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

@@ -6,9 +6,22 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 
 ---
 
+## Features
+
+- **Search & filter** by hardware, benchmark type, use case, and status
+- **Sort** by stars, name, or last-reviewed date
+- **Shareable URLs** — filters and deep links persist in the query string (`?type=rag&hw=gpu&tool=ragas`)
+- **Find a tool wizard** — answer 3 questions to get recommendations
+- **Compare** up to 3 tools side-by-side
+- **Related tools** and extra resource links (docs, papers, Hugging Face) in each detail modal
+- **Auto-refreshed GitHub stats** via weekly GitHub Action
+- **Schema validation** in CI for contributor data quality
+
+---
+
 ## What's in it
 
-42 tools across 10 categories:
+47 tools across 10 categories:
 
 | Category | What it covers |
 |---|---|
@@ -23,27 +36,18 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 | 🖼️ Multimodal | Image/video understanding, visual reasoning, cross-modal QA |
 | 🔒 Security & Vulnerability | Red-teaming, vulnerability localization, code security |
 
-Each tool card shows:
-- Organization logo
-- Description
-- Hardware support (CPU / GPU)
-- Benchmark type badge
-- GitHub stars and forks
-
-Click any card to open a detail modal with metrics, license, and a link to the repo.
+Each tool card shows organization info, description, hardware support, benchmark type badges, and GitHub stars/forks. Click any card for full details, related tools, and resource links.
 
 ---
 
 ## Running locally
 
-No build step. Just open `index.html` in a browser:
+No build step required for the site itself. Just open `index.html` in a browser:
 
 ```bash
 git clone https://github.com/maryamtahhan/evalscape.git
 cd evalscape
 open index.html          # macOS
-xdg-open index.html      # Linux
-start index.html         # Windows
 ```
 
 Or serve it with any static file server:
@@ -51,6 +55,19 @@ Or serve it with any static file server:
 ```bash
 python3 -m http.server 8000
 # then open http://localhost:8000
+```
+
+To validate data changes:
+
+```bash
+npm install
+npm run validate
+```
+
+To manually refresh GitHub star counts:
+
+```bash
+npm run refresh-stars
 ```
 
 ---
@@ -66,26 +83,50 @@ python3 -m http.server 8000
   shortName: 'MyTool',     // shown in dense view
   initials: 'MT',          // shown if no logo
   logo: 'logos/my-tool.png', // optional — drop image in logos/
-  stars: 1234,             // GitHub stargazers_count
-  forks: 56,               // GitHub forks_count
+  stars: 1234,
+  forks: 56,
   description: 'One or two sentences describing what the tool measures and how.',
   category: 'inference',   // must match a category id
   hardware: ['cpu', 'gpu'],
-  types: ['online'],       // see type values below
+  types: ['online'],
   url: 'https://github.com/org/repo',
+  docs: 'https://docs.example.com',       // optional
+  paper: 'https://arxiv.org/abs/...',     // optional
+  huggingface: 'https://huggingface.co/...', // optional
   license: 'Apache 2.0',
   org: 'Org Name',
-  metrics: [
-    'Metric one',
-    'Metric two',
-  ],
+  status: 'active',        // active | experimental | archived
+  lastReviewed: '2026-08-01',
+  useCases: ['pre-production', 'ci-friendly'],
+  related: ['vllm-serve', 'llmperf'],
+  metrics: ['Metric one', 'Metric two'],
   tags: ['tag1', 'tag2'],
 },
 ```
 
 **Valid `types` values:** `online`, `offline`, `quality`, `code`, `agent`, `rag`, `embedding`, `audio`, `safety`, `multimodal`, `security`
 
-2. If adding a new category, add it to the `categories` array and update `catEmoji`, `TYPE_LABELS`, `TYPE_CLASS` in `app.js`, the filter list in `index.html`, and the badge CSS variables in `style.css`.
+**Valid `useCases` values:** `pre-production`, `ci-friendly`, `leaderboard`, `production-monitoring`, `research`, `api-benchmarking`, `cost-analysis`
+
+2. Run `npm run validate` to check your entry against the JSON schema.
+
+3. If adding a new category, add it to the `categories` array and update `catEmoji`, `TYPE_LABELS`, `TYPE_CLASS` in `app.js`, the filter list in `index.html`, and the badge CSS variables in `style.css`.
+
+---
+
+## Shareable URLs
+
+| Parameter | Example | Description |
+|---|---|---|
+| `q` | `?q=ragas` | Search query |
+| `hw` | `?hw=gpu` | Hardware filter |
+| `type` | `?type=rag` | Benchmark type |
+| `useCase` | `?useCase=ci-friendly` | Use case filter |
+| `status` | `?status=active` | Tool status |
+| `sort` | `?sort=stars` | Sort order |
+| `view` | `?view=dense` | View mode |
+| `tool` | `?tool=ragas` | Open tool detail modal |
+| `compare` | `?compare=ragas,deepeval` | Pre-select compare list |
 
 ---
 
@@ -107,14 +148,18 @@ The site deploys automatically to GitHub Pages via GitHub Actions on every push 
 
 **Settings → Pages → Source → GitHub Actions**
 
+A separate workflow validates `data.js` on every PR, and another refreshes GitHub star counts weekly.
+
 ---
 
 ## Contributing
 
 Pull requests are welcome — especially for:
+
 - New tools or benchmarks that are missing
 - Corrected descriptions or metrics
 - Updated GitHub star counts
 - Better logos
+- Related-tool suggestions
 
-Please keep descriptions factual and concise (1–2 sentences), and verify that any GitHub stats you add come from the canonical repository for the tool.
+Please keep descriptions factual and concise (1–2 sentences), run `npm run validate` before submitting, and verify that any GitHub stats come from the canonical repository.
