@@ -172,6 +172,8 @@ logos/my-tool.png
 
 Then set `logo: 'logos/my-tool.png'` on the tool entry. If omitted, the card displays the `initials` string instead.
 
+Logos and trademarks are property of their respective owners. Evalscape is an independent directory and is not affiliated with or endorsed by any listed project.
+
 ---
 
 ## Deployment

@@ -1194,6 +1194,16 @@ body.has-compare-bar .main-content { padding-bottom: 100px; }
 .no-results-icon { font-size: 36px; line-height: 1; }
 .no-results p { font-size: 14px; }
 
+.site-disclaimer {
+  padding: 16px 24px 24px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.site-disclaimer p { margin: 0; max-width: 52rem; margin-inline: auto; }
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
