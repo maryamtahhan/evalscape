@@ -1096,6 +1096,7 @@ const LANDSCAPE = {
       name: 'LangSmith',
       shortName: 'LangSmith',
       initials: 'LS',
+      logo: 'logos/langsmith.png',
       stars: 0,
       forks: 0,
       description:
@@ -1124,6 +1125,7 @@ const LANDSCAPE = {
       name: 'Arize Phoenix',
       shortName: 'Phoenix',
       initials: 'PX',
+      logo: 'logos/arize-phoenix.png',
       stars: 5200,
       forks: 420,
       description:
@@ -1152,6 +1154,7 @@ const LANDSCAPE = {
       name: 'TensorRT-LLM Benchmarks',
       shortName: 'TRT-LLM',
       initials: 'TR',
+      logo: 'logos/tensorrt-llm.png',
       stars: 10200,
       forks: 1500,
       description:
@@ -1180,6 +1183,7 @@ const LANDSCAPE = {
       name: 'Text Generation Inference',
       shortName: 'TGI',
       initials: 'TG',
+      logo: 'logos/tgi-bench.png',
       stars: 9200,
       forks: 980,
       description:
@@ -1209,6 +1213,7 @@ const LANDSCAPE = {
       name: 'Weights & Biases Weave',
       shortName: 'W&B Weave',
       initials: 'WB',
+      logo: 'logos/wandb-weave.png',
       stars: 0,
       forks: 0,
       description:
