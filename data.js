@@ -1260,6 +1260,197 @@ const RELATED_MAP = {
   'truthfulqa':       ['simplesafetytests', 'strongreject'],
 };
 
+const TOOL_META = {
+  'vllm-serve': {
+    hosting: 'self-hosted', outputFormats: ['json', 'prometheus'], modelScope: 'agnostic',
+    adoption: 'both', datasets: ['ShareGPT', 'custom prompts'],
+  },
+  'vllm-throughput': {
+    hosting: 'library', outputFormats: ['json', 'csv'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['synthetic workloads'],
+  },
+  'mlperf': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'both', foundation: 'MLCommons', datasets: ['MLPerf Inference', 'MLPerf Training'],
+  },
+  'guidellm': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['custom prompts'],
+  },
+  'inferx': {
+    hosting: 'self-hosted', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'production', datasets: ['custom workloads'],
+  },
+  'genai-perf': {
+    hosting: 'library', outputFormats: ['json', 'csv'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['synthetic prompts'],
+  },
+  'llmperf': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['custom prompts'],
+  },
+  'perf-analyzer': {
+    hosting: 'library', outputFormats: ['json', 'prometheus'], modelScope: 'agnostic',
+    adoption: 'both', foundation: 'NVIDIA', datasets: ['synthetic workloads'],
+  },
+  'helm': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['MMLU', 'TruthfulQA', 'BBQ', 'RAFT'],
+  },
+  'lm-eval': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'huggingface',
+    adoption: 'research', datasets: ['MMLU', 'HumanEval', 'GSM8K', 'HellaSwag'],
+  },
+  'openai-evals': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'openai-compatible',
+    adoption: 'research', datasets: ['custom eval sets'],
+  },
+  'humaneval': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['HumanEval'],
+  },
+  'swe-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['SWE-bench'],
+  },
+  'bigcodebench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['BigCodeBench'],
+  },
+  'livecodebench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['LiveCodeBench'],
+  },
+  'bfcl': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['BFCL'],
+  },
+  'agentbench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['AgentBench'],
+  },
+  'tau-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['τ-bench'],
+  },
+  'webarena': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['WebArena'],
+  },
+  'ragas': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'both', datasets: ['custom RAG datasets'],
+  },
+  'deepeval': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['custom test cases'],
+  },
+  'trulens': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'both', datasets: ['custom feedback sets'],
+  },
+  'promptfoo': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['custom prompt sets'],
+  },
+  'mteb': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'huggingface',
+    adoption: 'research', datasets: ['MTEB'],
+  },
+  'beir': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['BEIR'],
+  },
+  'air-bench-retrieval': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['AIR-Bench'],
+  },
+  'whisper-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'huggingface',
+    adoption: 'research', datasets: ['LibriSpeech', 'Common Voice'],
+  },
+  'esb': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'huggingface',
+    adoption: 'research', datasets: ['ESB'],
+  },
+  'voice-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['VoiceBench'],
+  },
+  'superb': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'huggingface',
+    adoption: 'research', datasets: ['SUPERB'],
+  },
+  'truthfulqa': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['TruthfulQA'],
+  },
+  'simplesafetytests': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['SimpleSafetyTests'],
+  },
+  'strongreject': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['StrongREJECT'],
+  },
+  'salad-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['Salad-Bench'],
+  },
+  'vloc-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['VLoC-Bench'],
+  },
+  'garak': {
+    hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'openai-compatible',
+    adoption: 'both', datasets: ['Garak probes'],
+  },
+  'harmbench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['HarmBench'],
+  },
+  'cyberseceval': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', foundation: 'Meta', datasets: ['CyberSecEval'],
+  },
+  'mmmu': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['MMMU'],
+  },
+  'mmbench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['MMBench'],
+  },
+  'vqav2': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['VQA v2'],
+  },
+  'seed-bench': {
+    hosting: 'library', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'research', datasets: ['SEED-Bench'],
+  },
+  'langsmith': {
+    hosting: 'both', outputFormats: ['json'], modelScope: 'agnostic',
+    adoption: 'production', foundation: 'LangChain', datasets: ['custom eval datasets'],
+  },
+  'arize-phoenix': {
+    hosting: 'both', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'production', datasets: ['custom eval datasets'],
+  },
+  'tensorrt-llm': {
+    hosting: 'library', outputFormats: ['json', 'csv'], modelScope: 'provider-specific',
+    adoption: 'both', foundation: 'NVIDIA', datasets: ['synthetic workloads'],
+  },
+  'tgi-bench': {
+    hosting: 'self-hosted', outputFormats: ['json', 'prometheus'], modelScope: 'huggingface',
+    adoption: 'both', foundation: 'Hugging Face', datasets: ['ShareGPT', 'custom prompts'],
+  },
+  'wandb-weave': {
+    hosting: 'both', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'both', foundation: 'Weights & Biases', datasets: ['custom scorer datasets'],
+  },
+};
+
 const inferUseCases = (tool) => {
   const cases = [];
   if (tool.types.includes('online')) cases.push('pre-production', 'api-benchmarking');
@@ -1276,4 +1467,6 @@ LANDSCAPE.tools.forEach((t) => {
   t.lastReviewed = t.lastReviewed || '2026-08-01';
   t.useCases = t.useCases || inferUseCases(t);
   t.related = t.related || RELATED_MAP[t.id] || [];
+  const meta = TOOL_META[t.id];
+  if (meta) Object.assign(t, meta);
 });

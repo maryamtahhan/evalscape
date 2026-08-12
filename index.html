@@ -30,7 +30,7 @@
         </div>
         <div class="brand-text">
           <div class="brand-title">Evalscape</div>
-          <div class="brand-sub">AI benchmarking tools, frameworks &amp; leaderboards</div>
+          <div class="brand-sub">AI benchmarking tools, leaderboards &amp; standards</div>
         </div>
       </div>
 
@@ -38,6 +38,7 @@
         <div class="section-group" role="group" aria-label="Content section">
           <button class="section-btn active" id="btn-section-tools" type="button" aria-pressed="true">Tools</button>
           <button class="section-btn" id="btn-section-leaderboards" type="button" aria-pressed="false">Leaderboards</button>
+          <button class="section-btn" id="btn-section-standards" type="button" aria-pressed="false">Standards</button>
         </div>
 
         <div class="search-wrap">
@@ -54,6 +55,7 @@
             <option value="stars">Sort: Stars</option>
             <option value="name">Sort: Name</option>
             <option value="reviewed">Sort: Recently reviewed</option>
+            <option value="year" hidden>Sort: Year</option>
           </select>
         </label>
 
@@ -152,9 +154,14 @@
           </ul>
         </section>
 
-        <section class="filter-section">
+        <section class="filter-section" id="usecase-filter-section">
           <h2 class="filter-heading">Use Case</h2>
           <ul class="filter-list" id="usecase-filters" aria-label="Use case filter"></ul>
+        </section>
+
+        <section class="filter-section" id="standardtype-filter-section" hidden>
+          <h2 class="filter-heading">Standard Type</h2>
+          <ul class="filter-list" id="standardtype-filters" aria-label="Standard type filter"></ul>
         </section>
 
         <section class="filter-section">
@@ -256,6 +263,7 @@
 
   <script src="data.js"></script>
   <script src="leaderboards.js"></script>
+  <script src="standards.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

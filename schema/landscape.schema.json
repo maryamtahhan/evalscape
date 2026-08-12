@@ -19,6 +19,10 @@
     "leaderboards": {
       "type": "array",
       "items": { "$ref": "#/$defs/leaderboard" }
+    },
+    "standards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/standard" }
     }
   },
   "$defs": {
@@ -103,6 +107,26 @@
           "type": "array",
           "items": { "type": "string" },
           "uniqueItems": true
+        },
+        "hosting": {
+          "enum": ["self-hosted", "saas", "both", "library"]
+        },
+        "outputFormats": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "datasets": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "modelScope": {
+          "enum": ["agnostic", "openai-compatible", "provider-specific", "huggingface"]
+        },
+        "foundation": { "type": "string" },
+        "adoption": {
+          "enum": ["research", "production", "both"]
         }
       }
     },
@@ -160,6 +184,62 @@
           "uniqueItems": true
         },
         "relatedTools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "standard": {
+      "type": "object",
+      "required": [
+        "id", "name", "shortName", "initials", "description",
+        "category", "types", "standardType", "url"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "shortName": { "type": "string", "minLength": 1 },
+        "initials": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "logo": { "type": "string" },
+        "description": { "type": "string", "minLength": 1 },
+        "category": { "type": "string" },
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "online", "offline", "quality", "code", "agent",
+              "rag", "embedding", "audio", "safety", "multimodal", "security"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "standardType": {
+          "enum": ["benchmark", "governance", "regulation", "specification"]
+        },
+        "url": { "type": "string", "minLength": 1 },
+        "org": { "type": "string" },
+        "year": { "type": "integer", "minimum": 1990, "maximum": 2100 },
+        "conformance": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "status": {
+          "enum": ["active", "experimental", "archived"]
+        },
+        "lastReviewed": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "relatedTools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "relatedLeaderboards": {
           "type": "array",
           "items": { "type": "string" },
           "uniqueItems": true

@@ -9,11 +9,12 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 ## Features
 
 - **Search & filter** by hardware, benchmark type, use case, and status
-- **Tools & Leaderboards** — toggle between eval frameworks and public model ranking sites
+- **Tools, Leaderboards & Standards** — three pillars for choosing eval tools, ranking models, and understanding conformance requirements
 - **Sort** by stars, name, or last-reviewed date
 - **Shareable URLs** — filters and deep links persist in the query string (`?type=rag&hw=gpu&tool=ragas`)
 - **Find a tool wizard** — answer 3 questions to get recommendations
 - **Compare** up to 3 tools side-by-side
+- **Tool enrichment** — deployment model, adoption signals, output formats, datasets, and model compatibility in each detail modal
 - **Related tools** and extra resource links (docs, papers, Hugging Face) in each detail modal
 - **Auto-refreshed GitHub stats** via weekly GitHub Action
 - **Schema validation** in CI for contributor data quality
@@ -22,7 +23,7 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 
 ## What's in it
 
-47 tools across 10 categories, plus **31 public leaderboards** covering model rankings for quality, code, agents, RAG, embeddings, audio, multimodal, inference, safety, and security.
+47 tools across 10 categories, plus **31 public leaderboards** and **10 evaluation standards** covering model rankings, governance frameworks (NIST AI RMF, ISO 42001), industry benchmarks (MLPerf, SPEC ML), and regulations (EU AI Act).
 
 | Category | What it covers |
 |---|---|
@@ -102,6 +103,13 @@ npm run refresh-stars
   related: ['vllm-serve', 'llmperf'],
   metrics: ['Metric one', 'Metric two'],
   tags: ['tag1', 'tag2'],
+  // Optional enrichment (or add to TOOL_META in data.js):
+  hosting: 'library',              // self-hosted | saas | both | library
+  adoption: 'research',            // research | production | both
+  modelScope: 'agnostic',          // agnostic | openai-compatible | provider-specific | huggingface
+  foundation: 'MLCommons',         // optional backing org
+  outputFormats: ['json', 'html'],
+  datasets: ['MMLU', 'HumanEval'],
 },
 ```
 
@@ -127,8 +135,11 @@ npm run refresh-stars
 | `sort` | `?sort=stars` | Sort order |
 | `view` | `?view=dense` | View mode |
 | `section` | `?section=leaderboards` | Show leaderboards instead of tools |
+| `section` | `?section=standards` | Show evaluation standards |
+| `standardType` | `?standardType=governance` | Filter standards by type |
 | `tool` | `?tool=ragas` | Open tool detail modal |
 | `leaderboard` | `?leaderboard=chatbot-arena` | Open leaderboard detail modal |
+| `standard` | `?standard=nist-ai-rmf` | Open standard detail modal |
 | `compare` | `?compare=ragas,deepeval` | Pre-select compare list |
 
 ---
@@ -136,6 +147,16 @@ npm run refresh-stars
 ## Adding a leaderboard
 
 Add an entry to the `leaderboards` array in `leaderboards.js` (see existing entries for the full shape). Each leaderboard links to a public ranking site and can reference related eval tools from `data.js` via `relatedTools`.
+
+Run `npm run validate` after adding entries.
+
+---
+
+## Adding a standard
+
+Add an entry to the `standards` array in `standards.js`. Focus on evaluation-relevant standards — governance frameworks (NIST AI RMF, ISO 42001), industry benchmarks (MLPerf, SPEC ML), regulations (EU AI Act), and portable specifications (OpenTelemetry GenAI).
+
+Each standard should include a `conformance` field explaining what eval evidence practitioners need, plus optional `relatedTools` and `relatedLeaderboards` cross-references.
 
 Run `npm run validate` after adding entries.
 

@@ -19,6 +19,40 @@ const STATUS_LABELS = {
   archived:     'Archived',
 };
 
+const STANDARD_TYPE_LABELS = {
+  benchmark:     'Benchmark',
+  governance:    'Governance',
+  regulation:    'Regulation',
+  specification: 'Specification',
+};
+
+const STANDARD_TYPE_CLASS = {
+  benchmark:     'std-benchmark',
+  governance:    'std-governance',
+  regulation:    'std-regulation',
+  specification: 'std-spec',
+};
+
+const HOSTING_LABELS = {
+  'self-hosted': 'Self-hosted',
+  saas:          'SaaS',
+  both:          'SaaS + self-hosted',
+  library:       'Library',
+};
+
+const ADOPTION_LABELS = {
+  research:   'Research',
+  production: 'Production',
+  both:       'Research & production',
+};
+
+const MODEL_SCOPE_LABELS = {
+  agnostic:           'Model-agnostic',
+  'openai-compatible': 'OpenAI-compatible APIs',
+  huggingface:        'Hugging Face',
+  'provider-specific': 'Provider-specific',
+};
+
 const WIZARD_GOALS = [
   { id: 'inference',  label: 'Inference performance', types: ['online', 'offline'] },
   { id: 'quality',    label: 'Model quality & accuracy', types: ['quality'] },
@@ -46,6 +80,7 @@ const state = {
   type:     'all',
   useCase:  'all',
   status:   'all',
+  standardType: 'all',
   search:   '',
   view:     'comfy',
   sort:     'default',
@@ -66,12 +101,20 @@ const getCategory = (id) => LANDSCAPE.categories.find((c) => c.id === id);
 const getTool = (id) => LANDSCAPE.tools.find((t) => t.id === id);
 const getLeaderboard = (id) => (LANDSCAPE.leaderboards || []).find((lb) => lb.id === id);
 const getLeaderboards = () => LANDSCAPE.leaderboards || [];
+const getStandard = (id) => (LANDSCAPE.standards || []).find((s) => s.id === id);
+const getStandards = () => LANDSCAPE.standards || [];
 const isToolsSection = () => state.section === 'tools';
+const isLeaderboardsSection = () => state.section === 'leaderboards';
+const isStandardsSection = () => state.section === 'standards';
 
 const isFiltering = () => {
   if (isToolsSection() && state.hw !== 'all') return true;
-  return state.type !== 'all' || state.useCase !== 'all' ||
-    state.status !== 'all' || !!state.search;
+  if (isStandardsSection() && state.standardType !== 'all') return true;
+  if (state.type !== 'all') return true;
+  if (!isStandardsSection() && state.useCase !== 'all') return true;
+  if (state.status !== 'all') return true;
+  if (state.search) return true;
+  return false;
 };
 
 const isVisible = (tool) => {
@@ -90,6 +133,8 @@ const isVisible = (tool) => {
     const haystack = [
       tool.name, tool.description, tool.org,
       ...(tool.tags || []), ...(tool.useCases || []).map((u) => USE_CASE_LABELS[u] || u),
+      tool.foundation || '', tool.hosting || '', tool.modelScope || '', tool.adoption || '',
+      ...(tool.outputFormats || []), ...(tool.datasets || []),
     ].join(' ').toLowerCase();
     if (!haystack.includes(q)) return false;
   }
@@ -111,6 +156,22 @@ const isLeaderboardVisible = (lb) => {
   return true;
 };
 
+const isStandardVisible = (std) => {
+  if (state.standardType !== 'all' && std.standardType !== state.standardType) return false;
+  if (state.type !== 'all' && !std.types.includes(state.type)) return false;
+  if (state.status !== 'all' && std.status !== state.status) return false;
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    const haystack = [
+      std.name, std.description, std.org, std.conformance || '',
+      STANDARD_TYPE_LABELS[std.standardType] || std.standardType,
+      ...(std.tags || []),
+    ].join(' ').toLowerCase();
+    if (!haystack.includes(q)) return false;
+  }
+  return true;
+};
+
 const sortTools = (tools) => {
   const list = [...tools];
   if (state.sort === 'stars') {
@@ -126,6 +187,18 @@ const sortTools = (tools) => {
 const sortLeaderboards = (items) => {
   const list = [...items];
   if (state.sort === 'name') {
+    list.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (state.sort === 'reviewed') {
+    list.sort((a, b) => (b.lastReviewed || '').localeCompare(a.lastReviewed || ''));
+  }
+  return list;
+};
+
+const sortStandards = (items) => {
+  const list = [...items];
+  if (state.sort === 'year') {
+    list.sort((a, b) => (b.year || 0) - (a.year || 0));
+  } else if (state.sort === 'name') {
     list.sort((a, b) => a.name.localeCompare(b.name));
   } else if (state.sort === 'reviewed') {
     list.sort((a, b) => (b.lastReviewed || '').localeCompare(a.lastReviewed || ''));
@@ -159,6 +232,8 @@ const syncUrl = () => {
   else                          params.delete('compare');
   if (state.section !== 'tools') params.set('section', state.section);
   else                           params.delete('section');
+  if (state.standardType !== 'all') params.set('standardType', state.standardType);
+  else                          params.delete('standardType');
   const qs = params.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
 };
@@ -177,8 +252,14 @@ const readUrl = () => {
     state.compare = params.get('compare').split(',').filter((id) => getTool(id)).slice(0, 3);
   }
   if (params.get('section') === 'leaderboards') state.section = 'leaderboards';
+  else if (params.get('section') === 'standards') state.section = 'standards';
+  if (params.get('standardType')) state.standardType = params.get('standardType');
   suppressUrlSync = false;
-  return { tool: params.get('tool'), leaderboard: params.get('leaderboard') };
+  return {
+    tool: params.get('tool'),
+    leaderboard: params.get('leaderboard'),
+    standard: params.get('standard'),
+  };
 };
 
 const setUrlTool = (toolId) => {
@@ -186,6 +267,7 @@ const setUrlTool = (toolId) => {
   if (toolId) {
     params.set('tool', toolId);
     params.delete('leaderboard');
+    params.delete('standard');
   } else params.delete('tool');
   const qs = params.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
@@ -196,7 +278,19 @@ const setUrlLeaderboard = (lbId) => {
   if (lbId) {
     params.set('leaderboard', lbId);
     params.delete('tool');
+    params.delete('standard');
   } else params.delete('leaderboard');
+  const qs = params.toString();
+  window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+};
+
+const setUrlStandard = (standardId) => {
+  const params = new URLSearchParams(window.location.search);
+  if (standardId) {
+    params.set('standard', standardId);
+    params.delete('tool');
+    params.delete('leaderboard');
+  } else params.delete('standard');
   const qs = params.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
 };
@@ -224,6 +318,8 @@ const useCaseBadge = (uc) =>
 const statusBadge = (status) =>
   `<span class="badge status-${status}">${STATUS_LABELS[status] || status}</span>`;
 const lbBadge = () => `<span class="badge lb-badge">Leaderboard</span>`;
+const standardTypeBadge = (standardType) =>
+  `<span class="badge ${STANDARD_TYPE_CLASS[standardType] || ''}">${STANDARD_TYPE_LABELS[standardType] || standardType}</span>`;
 
 const fmtNum = (n) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 const fmtDate = (d) => {
@@ -272,6 +368,7 @@ const cardComfy = (tool, cat) => {
       <div class="card-badges">
         ${tool.hardware.map(hwBadge).join('')}
         ${tool.types.map(typeBadge).join('')}
+        ${cardMetaBadges(tool)}
       </div>
       ${statsRow(tool)}
     </div>
@@ -328,6 +425,50 @@ const lbCardDense = (lb, cat) => `
     </div>
     <div class="card-name-dense">${lb.shortName}</div>
     <div class="card-badges-dense">${lb.types.slice(0, 1).map(typeBadge).join('')}</div>
+  </div>`;
+
+const cardMetaBadges = (tool) => {
+  const badges = [];
+  if (tool.hosting) badges.push(`<span class="badge meta-hosting">${HOSTING_LABELS[tool.hosting] || tool.hosting}</span>`);
+  if (tool.foundation) badges.push(`<span class="badge meta-foundation">${tool.foundation}</span>`);
+  return badges.length ? badges.join('') : '';
+};
+
+const standardCardComfy = (std, cat) => `
+  <div class="tool-card standard-card${isStandardVisible(std) ? '' : ' hidden'}"
+       data-id="${std.id}"
+       data-kind="standard"
+       style="--cat-color:${cat.color}"
+       role="button"
+       tabindex="0"
+       aria-label="View details for ${std.name}">
+    <div class="card-hero">
+      ${heroContent(std)}
+      ${standardTypeBadge(std.standardType)}
+    </div>
+    <div class="card-body">
+      <div class="card-name">${std.name}</div>
+      <div class="card-desc">${std.description}</div>
+      <div class="card-badges">
+        ${std.types.map(typeBadge).join('')}
+        ${std.year ? `<span class="badge std-year">${std.year}</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+
+const standardCardDense = (std, cat) => `
+  <div class="tool-card dense standard-card${isStandardVisible(std) ? '' : ' hidden'}"
+       data-id="${std.id}"
+       data-kind="standard"
+       style="--cat-color:${cat.color}"
+       role="button"
+       tabindex="0"
+       aria-label="View details for ${std.name}">
+    <div class="card-hero-dense">
+      ${heroContent(std, 'card-initials-dense')}
+    </div>
+    <div class="card-name-dense">${std.shortName}</div>
+    <div class="card-badges-dense">${standardTypeBadge(std.standardType)}</div>
   </div>`;
 
 const catEmoji = (id) => ({
@@ -412,9 +553,46 @@ const renderLeaderboards = () => {
 
 const renderContent = () => {
   if (isToolsSection()) renderCards();
-  else renderLeaderboards();
+  else if (isLeaderboardsSection()) renderLeaderboards();
+  else renderStandards();
   renderCatNav();
   updateSectionUI();
+};
+
+const renderStandards = () => {
+  const main = $('#main-content');
+  const mkCard = state.view === 'dense' ? standardCardDense : standardCardComfy;
+  const filtering = hasActiveFilters();
+
+  const sections = LANDSCAPE.categories
+    .map((cat) => {
+      const standards = sortStandards(getStandards().filter((s) => s.category === cat.id));
+      const visible = standards.filter(isStandardVisible);
+      if (filtering && visible.length === 0) return '';
+      return `
+        <section class="cat-section" id="cat-${cat.id}" style="--cat-color:${cat.color}">
+          <div class="cat-header">
+            <div class="cat-icon" style="background:${cat.color}20; color:${cat.color}">
+              ${catEmoji(cat.id)}
+            </div>
+            <div class="cat-meta">
+              <h2 class="cat-title">${cat.name}</h2>
+              <p class="cat-desc">${cat.description}</p>
+            </div>
+            <span class="cat-badge" id="badge-${cat.id}">${visible.length} / ${standards.length}</span>
+          </div>
+          <div class="cards-grid${state.view === 'dense' ? ' dense-grid' : ''}">
+            ${standards.map((s) => mkCard(s, cat)).join('')}
+          </div>
+        </section>`;
+    })
+    .filter(Boolean)
+    .join('');
+
+  main.innerHTML = sections;
+  attachCardHandlers();
+  updateCounts();
+  updateNoResults();
 };
 
 const updateVisibility = () => {
@@ -425,7 +603,9 @@ const updateVisibility = () => {
 const updateNoResults = () => {
   const totalVisible = isToolsSection()
     ? LANDSCAPE.tools.filter(isVisible).length
-    : getLeaderboards().filter(isLeaderboardVisible).length;
+    : isLeaderboardsSection()
+      ? getLeaderboards().filter(isLeaderboardVisible).length
+      : getStandards().filter(isStandardVisible).length;
   const noResults = $('#no-results');
   const main = $('#main-content');
   if (totalVisible === 0 && hasActiveFilters()) {
@@ -445,13 +625,20 @@ const updateCounts = () => {
     $('#stat-total').textContent = total;
     $('#tool-count').textContent =
       totalVisible === total ? `${total} tools` : `${totalVisible} of ${total} tools`;
-  } else {
+  } else if (isLeaderboardsSection()) {
     const totalVisible = getLeaderboards().filter(isLeaderboardVisible).length;
     const total = getLeaderboards().length;
     $('#stat-visible').textContent = totalVisible;
     $('#stat-total').textContent = total;
     $('#tool-count').textContent =
       totalVisible === total ? `${total} leaderboards` : `${totalVisible} of ${total} leaderboards`;
+  } else {
+    const totalVisible = getStandards().filter(isStandardVisible).length;
+    const total = getStandards().length;
+    $('#stat-visible').textContent = totalVisible;
+    $('#stat-total').textContent = total;
+    $('#tool-count').textContent =
+      totalVisible === total ? `${total} standards` : `${totalVisible} of ${total} standards`;
   }
 };
 
@@ -462,7 +649,10 @@ const renderCatNav = () => {
     if (isToolsSection()) {
       return LANDSCAPE.tools.some((t) => t.category === catId && isVisible(t));
     }
-    return getLeaderboards().some((lb) => lb.category === catId && isLeaderboardVisible(lb));
+    if (isLeaderboardsSection()) {
+      return getLeaderboards().some((lb) => lb.category === catId && isLeaderboardVisible(lb));
+    }
+    return getStandards().some((s) => s.category === catId && isStandardVisible(s));
   };
   nav.innerHTML = LANDSCAPE.categories
     .filter((cat) => !filtering || visibleInCat(cat.id))
@@ -490,13 +680,28 @@ const renderUseCaseFilters = () => {
   list.innerHTML = items.join('');
 };
 
+const renderStandardTypeFilters = () => {
+  const list = $('#standardtype-filters');
+  const items = [
+    `<li class="filter-item active" data-group="standardType" data-value="all" tabindex="0">
+       <span class="filter-dot" aria-hidden="true"></span>All Standard Types
+     </li>`,
+    ...Object.entries(STANDARD_TYPE_LABELS).map(([id, label]) => `
+      <li class="filter-item" data-group="standardType" data-value="${id}" tabindex="0">
+        <span class="filter-dot std-type-dot" aria-hidden="true"></span>${label}
+      </li>`),
+  ];
+  list.innerHTML = items.join('');
+};
+
 /* ============================================================
    Card handlers
    ============================================================ */
 const attachCardHandlers = () => {
   $$('.tool-card').forEach((card) => {
     const handler = () => {
-      if (card.dataset.kind === 'leaderboard') openLeaderboardModal(card.dataset.id);
+      if (card.dataset.kind === 'standard') openStandardModal(card.dataset.id);
+      else if (card.dataset.kind === 'leaderboard') openLeaderboardModal(card.dataset.id);
       else openModal(card.dataset.id);
     };
     card.addEventListener('click', handler);
@@ -550,6 +755,11 @@ const openCompareModal = () => {
     ['Hardware', ...tools.map((t) => t.hardware.map((h) => HW_LABELS[h]).join(', '))],
     ['Types', ...tools.map((t) => t.types.map((ty) => TYPE_LABELS[ty]).join(', '))],
     ['Use cases', ...tools.map((t) => (t.useCases || []).map((u) => USE_CASE_LABELS[u]).join(', ') || '—')],
+    ['Hosting', ...tools.map((t) => HOSTING_LABELS[t.hosting] || '—')],
+    ['Adoption', ...tools.map((t) => ADOPTION_LABELS[t.adoption] || '—')],
+    ['Model scope', ...tools.map((t) => MODEL_SCOPE_LABELS[t.modelScope] || '—')],
+    ['Output formats', ...tools.map((t) => (t.outputFormats || []).join(', ') || '—')],
+    ['Datasets', ...tools.map((t) => (t.datasets || []).slice(0, 4).join(', ') || '—')],
     ['Stars', ...tools.map((t) => fmtNum(t.stars || 0))],
     ['License', ...tools.map((t) => t.license || '—')],
     ['Last reviewed', ...tools.map((t) => fmtDate(t.lastReviewed))],
@@ -633,6 +843,53 @@ const relatedTools = (tool) => {
     </div>`;
 };
 
+const toolEnrichmentSections = (tool) => {
+  const sections = [];
+  if (tool.hosting) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Deployment</div>
+        <div class="modal-badges"><span class="badge meta-hosting">${HOSTING_LABELS[tool.hosting]}</span></div>
+      </div>`);
+  }
+  if (tool.adoption) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Adoption</div>
+        <div class="modal-badges"><span class="badge meta-adoption">${ADOPTION_LABELS[tool.adoption]}</span></div>
+      </div>`);
+  }
+  if (tool.foundation) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Foundation / Backing</div>
+        <span class="license-tag">${tool.foundation}</span>
+      </div>`);
+  }
+  if (tool.modelScope) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Model Compatibility</div>
+        <div class="modal-badges"><span class="badge meta-scope">${MODEL_SCOPE_LABELS[tool.modelScope]}</span></div>
+      </div>`);
+  }
+  if (tool.outputFormats?.length) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Output Formats</div>
+        <div class="modal-badges">${tool.outputFormats.map((f) => `<span class="badge meta-format">${f}</span>`).join('')}</div>
+      </div>`);
+  }
+  if (tool.datasets?.length) {
+    sections.push(`
+      <div class="modal-section">
+        <div class="modal-section-title">Datasets &amp; Benchmarks</div>
+        <div class="modal-badges">${tool.datasets.map((d) => `<span class="badge meta-dataset">${d}</span>`).join('')}</div>
+      </div>`);
+  }
+  return sections.join('');
+};
+
 const openModal = (toolId) => {
   const tool = getTool(toolId);
   if (!tool) return;
@@ -671,6 +928,8 @@ const openModal = (toolId) => {
           <div class="modal-section-title">Use Cases</div>
           <div class="modal-badges">${tool.useCases.map(useCaseBadge).join('')}</div>
         </div>` : ''}
+
+      ${toolEnrichmentSections(tool)}
 
       ${tool.metrics?.length ? `
         <div class="modal-section">
@@ -812,7 +1071,104 @@ const closeModal = () => {
   document.body.classList.remove('no-scroll');
   setUrlTool(null);
   setUrlLeaderboard(null);
+  setUrlStandard(null);
   if (lastFocused) lastFocused.focus();
+};
+
+const relatedStandardLinks = (std) => {
+  const tools = (std.relatedTools || []).map(getTool).filter(Boolean);
+  const boards = (std.relatedLeaderboards || []).map(getLeaderboard).filter(Boolean);
+  if (!tools.length && !boards.length) return '';
+  return `
+    ${tools.length ? `
+      <div class="modal-section">
+        <div class="modal-section-title">Related Tools</div>
+        <div class="related-list">
+          ${tools.map((t) => `
+            <button class="related-chip" type="button" data-related-tool="${t.id}">${t.shortName}</button>`).join('')}
+        </div>
+      </div>` : ''}
+    ${boards.length ? `
+      <div class="modal-section">
+        <div class="modal-section-title">Related Leaderboards</div>
+        <div class="related-list">
+          ${boards.map((lb) => `
+            <button class="related-chip" type="button" data-related-lb="${lb.id}">${lb.shortName}</button>`).join('')}
+        </div>
+      </div>` : ''}`;
+};
+
+const openStandardModal = (standardId) => {
+  const std = getStandard(standardId);
+  if (!std) return;
+  const cat = getCategory(std.category);
+
+  $('#modal-inner').innerHTML = `
+    <div class="modal-hero" style="background:${std.logo ? 'var(--surface)' : cat.color}">
+      ${std.logo
+        ? `<img src="${std.logo}" alt="${std.name} logo" class="modal-logo" onerror="this.style.display='none'">`
+        : `<span class="modal-initials">${std.initials}</span>`}
+      ${std.org ? `<span class="modal-org">${std.org}</span>` : ''}
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <div>
+          <div class="modal-name" id="modal-title">${std.name}</div>
+          <div class="modal-cat" style="color:${cat.color}">${cat.name}</div>
+        </div>
+        <div class="modal-badges">${standardTypeBadge(std.standardType)}${statusBadge(std.status)}</div>
+      </div>
+      <p class="modal-desc">${std.description}</p>
+
+      ${std.conformance ? `
+        <div class="modal-section">
+          <div class="modal-section-title">Conformance &amp; Eval Relevance</div>
+          <p class="modal-conformance">${std.conformance}</p>
+        </div>` : ''}
+
+      <div class="modal-section">
+        <div class="modal-section-title">Details</div>
+        <div class="modal-badges">
+          ${std.types.map(typeBadge).join('')}
+          ${std.year ? `<span class="badge std-year">${std.year}</span>` : ''}
+        </div>
+      </div>
+
+      ${std.lastReviewed ? `
+        <div class="modal-section">
+          <div class="modal-section-title">Last Reviewed</div>
+          <span class="license-tag">${fmtDate(std.lastReviewed)}</span>
+        </div>` : ''}
+
+      ${relatedStandardLinks(std)}
+
+      <div class="modal-actions">
+        <a href="${std.url}" target="_blank" rel="noopener noreferrer" class="modal-cta">
+          View Standard ${extIcon}
+        </a>
+      </div>
+    </div>`;
+
+  $$('[data-related-tool]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      closeModal();
+      setSection('tools');
+      openModal(btn.dataset.relatedTool);
+    });
+  });
+  $$('[data-related-lb]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      closeModal();
+      setSection('leaderboards');
+      openLeaderboardModal(btn.dataset.relatedLb);
+    });
+  });
+
+  lastFocused = document.activeElement;
+  $('#modal-backdrop').hidden = false;
+  document.body.classList.add('no-scroll');
+  setUrlStandard(standardId);
+  $('#modal-close').focus();
 };
 
 /* ============================================================
@@ -952,7 +1308,7 @@ const closeWizard = () => {
    Filters & UI sync
    ============================================================ */
 const applyFilterUI = () => {
-  ['hw', 'type', 'useCase', 'status'].forEach((group) => {
+  ['hw', 'type', 'useCase', 'status', 'standardType'].forEach((group) => {
     $$(`[data-group="${group}"]`).forEach((item) => {
       const active = item.dataset.value === state[group];
       item.classList.toggle('active', active);
@@ -960,11 +1316,19 @@ const applyFilterUI = () => {
     });
   });
   $('#search').value = state.search;
-  $('#search').placeholder = isToolsSection() ? 'Search tools…' : 'Search leaderboards…';
+  const placeholders = {
+    tools: 'Search tools…',
+    leaderboards: 'Search leaderboards…',
+    standards: 'Search standards…',
+  };
+  $('#search').placeholder = placeholders[state.section] || 'Search…';
   $('#sort').value = state.sort;
   const starsOpt = $('#sort option[value="stars"]');
+  const yearOpt = $('#sort option[value="year"]');
   if (starsOpt) starsOpt.hidden = !isToolsSection();
+  if (yearOpt) yearOpt.hidden = !isStandardsSection();
   if (!isToolsSection() && state.sort === 'stars') state.sort = 'default';
+  if (!isStandardsSection() && state.sort === 'year') state.sort = 'default';
   $('#btn-comfy').classList.toggle('active', state.view === 'comfy');
   $('#btn-dense').classList.toggle('active', state.view === 'dense');
   $('#btn-comfy').setAttribute('aria-pressed', state.view === 'comfy');
@@ -973,10 +1337,14 @@ const applyFilterUI = () => {
 
 const updateSectionUI = () => {
   $('#btn-section-tools').classList.toggle('active', isToolsSection());
-  $('#btn-section-leaderboards').classList.toggle('active', !isToolsSection());
+  $('#btn-section-leaderboards').classList.toggle('active', isLeaderboardsSection());
+  $('#btn-section-standards').classList.toggle('active', isStandardsSection());
   $('#btn-section-tools').setAttribute('aria-pressed', isToolsSection());
-  $('#btn-section-leaderboards').setAttribute('aria-pressed', !isToolsSection());
+  $('#btn-section-leaderboards').setAttribute('aria-pressed', isLeaderboardsSection());
+  $('#btn-section-standards').setAttribute('aria-pressed', isStandardsSection());
   $('#hw-filter-section').hidden = !isToolsSection();
+  $('#usecase-filter-section').hidden = isStandardsSection();
+  $('#standardtype-filter-section').hidden = !isStandardsSection();
   $('#btn-wizard').hidden = !isToolsSection();
   $('#compare-bar').hidden = !isToolsSection() || state.compare.length === 0;
   document.body.classList.toggle('has-compare-bar', isToolsSection() && state.compare.length > 0);
@@ -1003,6 +1371,7 @@ const clearFilters = () => {
   state.type = 'all';
   state.useCase = 'all';
   state.status = 'all';
+  state.standardType = 'all';
   state.search = '';
   applyFilterUI();
   renderContent();
@@ -1014,6 +1383,7 @@ const clearFilters = () => {
    ============================================================ */
 const init = () => {
   renderUseCaseFilters();
+  renderStandardTypeFilters();
   const deep = readUrl();
   applyFilterUI();
   renderContent();
@@ -1040,6 +1410,7 @@ const init = () => {
 
   $('#btn-section-tools').addEventListener('click', () => setSection('tools'));
   $('#btn-section-leaderboards').addEventListener('click', () => setSection('leaderboards'));
+  $('#btn-section-standards').addEventListener('click', () => setSection('standards'));
 
   $('#btn-comfy').addEventListener('click', () => {
     if (state.view === 'comfy') return;
@@ -1101,6 +1472,9 @@ const init = () => {
   } else if (deep.leaderboard && getLeaderboard(deep.leaderboard)) {
     setSection('leaderboards');
     openLeaderboardModal(deep.leaderboard);
+  } else if (deep.standard && getStandard(deep.standard)) {
+    setSection('standards');
+    openStandardModal(deep.standard);
   }
 };
 

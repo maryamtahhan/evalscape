@@ -282,6 +282,38 @@ body.no-scroll { overflow: hidden; }
   right: 8px;
 }
 
+.badge.std-benchmark  { background: #DBEAFE; color: #1D4ED8; font-size: 9px; padding: 2px 7px; }
+.badge.std-governance { background: #EDE9FE; color: #5B21B6; font-size: 9px; padding: 2px 7px; }
+.badge.std-regulation { background: #FEE2E2; color: #B91C1C; font-size: 9px; padding: 2px 7px; }
+.badge.std-spec       { background: #E0F2FE; color: #0369A1; font-size: 9px; padding: 2px 7px; }
+.badge.std-year       { background: var(--bg); color: var(--text-2); border: 1px solid var(--border); }
+.filter-dot.std-type-dot { background: #6366F1; }
+.card-hero .badge.std-benchmark,
+.card-hero .badge.std-governance,
+.card-hero .badge.std-regulation,
+.card-hero .badge.std-spec {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.badge.meta-hosting   { background: #FEF3C7; color: #92400E; font-size: 9px; }
+.badge.meta-foundation { background: #E0E7FF; color: #3730A3; font-size: 9px; }
+.badge.meta-adoption  { background: #DCFCE7; color: #15803D; font-size: 9px; }
+.badge.meta-scope     { background: #F3E8FF; color: #6B21A8; font-size: 9px; }
+.badge.meta-format    { background: var(--bg); color: var(--text-2); border: 1px solid var(--border); font-size: 9px; }
+.badge.meta-dataset   { background: var(--bg); color: var(--text-2); border: 1px solid var(--border); font-size: 9px; }
+.modal-conformance { color: var(--text-2); font-size: 14px; line-height: 1.55; margin: 0; }
+@media (prefers-color-scheme: dark) {
+  .badge.std-benchmark  { background: #1e3a5f; color: #93c5fd; }
+  .badge.std-governance { background: #2e1065; color: #c4b5fd; }
+  .badge.std-regulation { background: #450a0a; color: #fca5a5; }
+  .badge.std-spec       { background: #082f49; color: #7dd3fc; }
+  .badge.meta-hosting   { background: #451a03; color: #fcd34d; }
+  .badge.meta-foundation { background: #1e1b4b; color: #a5b4fc; }
+  .badge.meta-adoption  { background: #052e16; color: #86efac; }
+  .badge.meta-scope     { background: #3b0764; color: #d8b4fe; }
+}
+
 .header-btn {
   background: var(--link);
   color: #fff;
