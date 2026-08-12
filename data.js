@@ -992,7 +992,7 @@ const LANDSCAPE = {
       category: 'security',
       hardware: ['cpu', 'gpu'],
       types: ['security'],
-      url: '#',
+      url: 'https://cisco-foundation-ai.github.io/vulnerability-localization-benchmark/',
       license: '',
       org: 'Cisco',
       metrics: [
