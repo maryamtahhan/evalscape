@@ -220,6 +220,7 @@
           "enum": ["benchmark", "governance", "regulation", "specification"]
         },
         "url": { "type": "string", "minLength": 1 },
+        "urlLabel": { "type": "string", "minLength": 1 },
         "org": { "type": "string" },
         "year": { "type": "integer", "minimum": 1990, "maximum": 2100 },
         "conformance": { "type": "string" },

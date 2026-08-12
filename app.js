@@ -434,6 +434,11 @@ const cardMetaBadges = (tool) => {
   return badges.length ? badges.join('') : '';
 };
 
+const standardSourceLink = (std) =>
+  std.url
+    ? `<a href="${std.url}" class="card-source-link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${std.urlLabel || std.org || 'Official source'} ${extIcon}</a>`
+    : '';
+
 const standardCardComfy = (std, cat) => `
   <div class="tool-card standard-card${isStandardVisible(std) ? '' : ' hidden'}"
        data-id="${std.id}"
@@ -449,6 +454,7 @@ const standardCardComfy = (std, cat) => `
     <div class="card-body">
       <div class="card-name">${std.name}</div>
       <div class="card-desc">${std.description}</div>
+      ${standardSourceLink(std)}
       <div class="card-badges">
         ${std.types.map(typeBadge).join('')}
         ${std.year ? `<span class="badge std-year">${std.year}</span>` : ''}
@@ -472,7 +478,7 @@ const standardCardDense = (std, cat) => `
   </div>`;
 
 const catEmoji = (id) => ({
-  inference: '⚡', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
+  inference: '⚡', 'cpu-inference': '🖥️', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
   embedding: '🔢', audio: '🎙️', safety: '🛡️', multimodal: '🖼️', security: '🔒',
 }[id] || '📊');
 
@@ -1142,9 +1148,18 @@ const openStandardModal = (standardId) => {
 
       ${relatedStandardLinks(std)}
 
+      <div class="modal-section">
+        <div class="modal-section-title">Official Source</div>
+        <div class="modal-links">
+          <a href="${std.url}" target="_blank" rel="noopener noreferrer" class="modal-link">
+            ${std.urlLabel || `View on ${std.org}`} ${extIcon}
+          </a>
+        </div>
+      </div>
+
       <div class="modal-actions">
         <a href="${std.url}" target="_blank" rel="noopener noreferrer" class="modal-cta">
-          View Standard ${extIcon}
+          ${std.urlLabel || 'View Standard'} ${extIcon}
         </a>
       </div>
     </div>`;

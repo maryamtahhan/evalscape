@@ -10,6 +10,14 @@ const LANDSCAPE = {
       colorDark: '#3B82F6',
     },
     {
+      id: 'cpu-inference',
+      name: 'CPU Inference Evaluation',
+      description:
+        'Methodology, automation, and reproducible test suites for evaluating LLM inference on CPU platforms — from baseline sweeps to production-like concurrent load.',
+      color: '#B45309',
+      colorDark: '#F59E0B',
+    },
+    {
       id: 'quality',
       name: 'LLM Quality & Accuracy',
       description:
@@ -382,7 +390,7 @@ const LANDSCAPE = {
       stars: 13603,
       forks: 3477,
       description:
-        "EleutherAI's unified framework for evaluating autoregressive LLMs across 200+ tasks — the canonical tool powering the Hugging Face Open LLM Leaderboard, supporting MMLU, HellaSwag, ARC, TruthfulQA, and many more.",
+        "EleutherAI's unified framework for evaluating autoregressive LLMs across 200+ tasks — widely used for public leaderboards and reproducible benchmarks, supporting MMLU, HellaSwag, ARC, TruthfulQA, and many more.",
       category: 'quality',
       hardware: ['cpu', 'gpu'],
       types: ['quality'],
@@ -1307,14 +1315,45 @@ const LANDSCAPE = {
       ],
       tags: ['wandb', 'weave', 'observability', 'evaluation'],
     },
+
+    // ── CPU Inference Evaluation ───────────────────────────────────────────
+    {
+      id: 'vllm-cpu-perf-eval',
+      name: 'vLLM CPU Performance Evaluation',
+      shortName: 'vLLM CPU Eval',
+      initials: 'CE',
+      stars: 8,
+      forks: 6,
+      description:
+        'Red Hat ET automated evaluation framework for vLLM on CPU — cpueval CLI, Ansible playbooks, and validated suites for concurrent load, offline batch, embedding (MTEB), and audio inference with Streamlit and MLflow results tracking.',
+      category: 'cpu-inference',
+      hardware: ['cpu'],
+      types: ['online', 'offline', 'embedding', 'audio'],
+      url: 'https://github.com/redhat-et/vllm-cpu-perf-eval',
+      docs: 'https://redhat-et.github.io/vllm-cpu-perf-eval/',
+      license: 'Apache 2.0',
+      org: 'Red Hat Emerging Technologies',
+      status: 'active',
+      lastReviewed: '2026-08-12',
+      useCases: ['pre-production', 'ci-friendly', 'api-benchmarking', 'research'],
+      related: ['vllm-serve', 'guidellm', 'mteb', 'inference-perf'],
+      metrics: [
+        'TTFT – Time To First Token',
+        'Token throughput (tok/s)',
+        'Request throughput (req/s)',
+        'Embedding quality (MTEB)',
+        'Inter-token latency',
+      ],
+      tags: ['vllm', 'cpu', 'red-hat', 'ansible', 'methodology', 'reproducible'],
+    },
   ],
 };
 
 /* ── Enrichment: defaults, use cases, and related tools ───────────────── */
 const RELATED_MAP = {
-  'vllm-serve':       ['guidellm', 'llmperf', 'genai-perf', 'tgi-bench'],
+  'vllm-serve':       ['guidellm', 'llmperf', 'genai-perf', 'tgi-bench', 'vllm-cpu-perf-eval'],
   'vllm-throughput':  ['tensorrt-llm', 'perf-analyzer'],
-  'guidellm':         ['vllm-serve', 'llmperf', 'genai-perf'],
+  'guidellm':         ['vllm-serve', 'llmperf', 'genai-perf', 'vllm-cpu-perf-eval'],
   'llmperf':          ['vllm-serve', 'guidellm', 'tgi-bench'],
   'genai-perf':       ['vllm-serve', 'perf-analyzer', 'tensorrt-llm'],
   'helm':             ['lm-eval', 'openai-evals'],
@@ -1338,6 +1377,11 @@ const TOOL_META = {
   'vllm-throughput': {
     hosting: 'library', outputFormats: ['json', 'csv'], modelScope: 'agnostic',
     adoption: 'research', datasets: ['synthetic workloads'],
+  },
+  'vllm-cpu-perf-eval': {
+    hosting: 'self-hosted', outputFormats: ['json', 'html'], modelScope: 'agnostic',
+    adoption: 'research', foundation: 'Red Hat ET',
+    datasets: ['concurrent-load', 'offline-batch', 'MTEB', 'audio workloads'],
   },
   'mlperf': {
     hosting: 'library', outputFormats: ['json', 'html'], modelScope: 'agnostic',
