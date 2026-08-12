@@ -41,6 +41,7 @@ const WIZARD_CONTEXTS = [
    State
    ============================================================ */
 const state = {
+  section:  'tools',
   hw:       'all',
   type:     'all',
   useCase:  'all',
@@ -63,6 +64,9 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
 const getCategory = (id) => LANDSCAPE.categories.find((c) => c.id === id);
 const getTool = (id) => LANDSCAPE.tools.find((t) => t.id === id);
+const getLeaderboard = (id) => (LANDSCAPE.leaderboards || []).find((lb) => lb.id === id);
+const getLeaderboards = () => LANDSCAPE.leaderboards || [];
+const isToolsSection = () => state.section === 'tools';
 
 const isFiltering = () =>
   state.hw !== 'all' || state.type !== 'all' || state.useCase !== 'all' ||
@@ -90,11 +94,36 @@ const isVisible = (tool) => {
   return true;
 };
 
+const isLeaderboardVisible = (lb) => {
+  if (state.type !== 'all' && !lb.types.includes(state.type)) return false;
+  if (state.useCase !== 'all' && !(lb.useCases || []).includes(state.useCase)) return false;
+  if (state.status !== 'all' && lb.status !== state.status) return false;
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    const haystack = [
+      lb.name, lb.description, lb.org,
+      ...(lb.tags || []), ...(lb.useCases || []).map((u) => USE_CASE_LABELS[u] || u),
+    ].join(' ').toLowerCase();
+    if (!haystack.includes(q)) return false;
+  }
+  return true;
+};
+
 const sortTools = (tools) => {
   const list = [...tools];
   if (state.sort === 'stars') {
     list.sort((a, b) => (b.stars || 0) - (a.stars || 0));
   } else if (state.sort === 'name') {
+    list.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (state.sort === 'reviewed') {
+    list.sort((a, b) => (b.lastReviewed || '').localeCompare(a.lastReviewed || ''));
+  }
+  return list;
+};
+
+const sortLeaderboards = (items) => {
+  const list = [...items];
+  if (state.sort === 'name') {
     list.sort((a, b) => a.name.localeCompare(b.name));
   } else if (state.sort === 'reviewed') {
     list.sort((a, b) => (b.lastReviewed || '').localeCompare(a.lastReviewed || ''));
@@ -126,6 +155,8 @@ const syncUrl = () => {
   else                          params.delete('sort');
   if (state.compare.length)     params.set('compare', state.compare.join(','));
   else                          params.delete('compare');
+  if (state.section !== 'tools') params.set('section', state.section);
+  else                           params.delete('section');
   const qs = params.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
 };
@@ -143,14 +174,27 @@ const readUrl = () => {
   if (params.get('compare')) {
     state.compare = params.get('compare').split(',').filter((id) => getTool(id)).slice(0, 3);
   }
+  if (params.get('section') === 'leaderboards') state.section = 'leaderboards';
   suppressUrlSync = false;
-  return params.get('tool');
+  return { tool: params.get('tool'), leaderboard: params.get('leaderboard') };
 };
 
 const setUrlTool = (toolId) => {
   const params = new URLSearchParams(window.location.search);
-  if (toolId) params.set('tool', toolId);
-  else params.delete('tool');
+  if (toolId) {
+    params.set('tool', toolId);
+    params.delete('leaderboard');
+  } else params.delete('tool');
+  const qs = params.toString();
+  window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+};
+
+const setUrlLeaderboard = (lbId) => {
+  const params = new URLSearchParams(window.location.search);
+  if (lbId) {
+    params.set('leaderboard', lbId);
+    params.delete('tool');
+  } else params.delete('leaderboard');
   const qs = params.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
 };
@@ -177,6 +221,7 @@ const useCaseBadge = (uc) =>
   `<span class="badge use-case">${USE_CASE_LABELS[uc] || uc}</span>`;
 const statusBadge = (status) =>
   `<span class="badge status-${status}">${STATUS_LABELS[status] || status}</span>`;
+const lbBadge = () => `<span class="badge lb-badge">Leaderboard</span>`;
 
 const fmtNum = (n) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 const fmtDate = (d) => {
@@ -210,6 +255,7 @@ const cardComfy = (tool, cat) => {
   return `
   <div class="tool-card${isVisible(tool) ? '' : ' hidden'}${inCompare ? ' in-compare' : ''}"
        data-id="${tool.id}"
+       data-kind="tool"
        style="--cat-color:${cat.color}"
        role="button"
        tabindex="0"
@@ -235,6 +281,7 @@ const cardDense = (tool, cat) => {
   return `
   <div class="tool-card dense${isVisible(tool) ? '' : ' hidden'}${inCompare ? ' in-compare' : ''}"
        data-id="${tool.id}"
+       data-kind="tool"
        style="--cat-color:${cat.color}"
        role="button"
        tabindex="0"
@@ -246,6 +293,40 @@ const cardDense = (tool, cat) => {
     <div class="card-badges-dense">${tool.hardware.map(hwBadge).join('')}</div>
   </div>`;
 };
+
+const lbCardComfy = (lb, cat) => `
+  <div class="tool-card lb-card${isLeaderboardVisible(lb) ? '' : ' hidden'}"
+       data-id="${lb.id}"
+       data-kind="leaderboard"
+       style="--cat-color:${cat.color}"
+       role="button"
+       tabindex="0"
+       aria-label="View details for ${lb.name}">
+    <div class="card-hero">
+      ${heroContent(lb)}
+      ${lbBadge()}
+    </div>
+    <div class="card-body">
+      <div class="card-name">${lb.name}</div>
+      <div class="card-desc">${lb.description}</div>
+      <div class="card-badges">${lb.types.map(typeBadge).join('')}</div>
+    </div>
+  </div>`;
+
+const lbCardDense = (lb, cat) => `
+  <div class="tool-card dense lb-card${isLeaderboardVisible(lb) ? '' : ' hidden'}"
+       data-id="${lb.id}"
+       data-kind="leaderboard"
+       style="--cat-color:${cat.color}"
+       role="button"
+       tabindex="0"
+       aria-label="View details for ${lb.name}">
+    <div class="card-hero-dense">
+      ${heroContent(lb, 'card-initials-dense')}
+    </div>
+    <div class="card-name-dense">${lb.shortName}</div>
+    <div class="card-badges-dense">${lb.types.slice(0, 1).map(typeBadge).join('')}</div>
+  </div>`;
 
 const catEmoji = (id) => ({
   inference: '⚡', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
@@ -291,14 +372,58 @@ const renderCards = () => {
   updateNoResults();
 };
 
-const updateVisibility = () => {
-  renderCards();
+const renderLeaderboards = () => {
+  const main = $('#main-content');
+  const mkCard = state.view === 'dense' ? lbCardDense : lbCardComfy;
+  const filtering = hasActiveFilters();
+
+  const sections = LANDSCAPE.categories
+    .map((cat) => {
+      const boards = sortLeaderboards(getLeaderboards().filter((lb) => lb.category === cat.id));
+      const visible = boards.filter(isLeaderboardVisible);
+      if (filtering && visible.length === 0) return '';
+      return `
+        <section class="cat-section" id="cat-${cat.id}" style="--cat-color:${cat.color}">
+          <div class="cat-header">
+            <div class="cat-icon" style="background:${cat.color}20; color:${cat.color}">
+              ${catEmoji(cat.id)}
+            </div>
+            <div class="cat-meta">
+              <h2 class="cat-title">${cat.name}</h2>
+              <p class="cat-desc">${cat.description}</p>
+            </div>
+            <span class="cat-badge" id="badge-${cat.id}">${visible.length} / ${boards.length}</span>
+          </div>
+          <div class="cards-grid${state.view === 'dense' ? ' dense-grid' : ''}">
+            ${boards.map((lb) => mkCard(lb, cat)).join('')}
+          </div>
+        </section>`;
+    })
+    .filter(Boolean)
+    .join('');
+
+  main.innerHTML = sections;
+  attachCardHandlers();
+  updateCounts();
+  updateNoResults();
+};
+
+const renderContent = () => {
+  if (isToolsSection()) renderCards();
+  else renderLeaderboards();
   renderCatNav();
+  updateSectionUI();
+};
+
+const updateVisibility = () => {
+  renderContent();
   syncUrl();
 };
 
 const updateNoResults = () => {
-  const totalVisible = LANDSCAPE.tools.filter(isVisible).length;
+  const totalVisible = isToolsSection()
+    ? LANDSCAPE.tools.filter(isVisible).length
+    : getLeaderboards().filter(isLeaderboardVisible).length;
   const noResults = $('#no-results');
   const main = $('#main-content');
   if (totalVisible === 0 && hasActiveFilters()) {
@@ -311,22 +436,34 @@ const updateNoResults = () => {
 };
 
 const updateCounts = () => {
-  const totalVisible = LANDSCAPE.tools.filter(isVisible).length;
-  const total = LANDSCAPE.tools.length;
-  $('#stat-visible').textContent = totalVisible;
-  $('#stat-total').textContent = total;
-  $('#tool-count').textContent =
-    totalVisible === total ? `${total} tools` : `${totalVisible} of ${total} tools`;
+  if (isToolsSection()) {
+    const totalVisible = LANDSCAPE.tools.filter(isVisible).length;
+    const total = LANDSCAPE.tools.length;
+    $('#stat-visible').textContent = totalVisible;
+    $('#stat-total').textContent = total;
+    $('#tool-count').textContent =
+      totalVisible === total ? `${total} tools` : `${totalVisible} of ${total} tools`;
+  } else {
+    const totalVisible = getLeaderboards().filter(isLeaderboardVisible).length;
+    const total = getLeaderboards().length;
+    $('#stat-visible').textContent = totalVisible;
+    $('#stat-total').textContent = total;
+    $('#tool-count').textContent =
+      totalVisible === total ? `${total} leaderboards` : `${totalVisible} of ${total} leaderboards`;
+  }
 };
 
 const renderCatNav = () => {
   const nav = $('#cat-nav');
   const filtering = hasActiveFilters();
+  const visibleInCat = (catId) => {
+    if (isToolsSection()) {
+      return LANDSCAPE.tools.some((t) => t.category === catId && isVisible(t));
+    }
+    return getLeaderboards().some((lb) => lb.category === catId && isLeaderboardVisible(lb));
+  };
   nav.innerHTML = LANDSCAPE.categories
-    .filter((cat) => {
-      if (!filtering) return true;
-      return LANDSCAPE.tools.some((t) => t.category === cat.id && isVisible(t));
-    })
+    .filter((cat) => !filtering || visibleInCat(cat.id))
     .map((cat) => `
       <li>
         <a href="#cat-${cat.id}" class="cat-nav-link">
@@ -356,11 +493,15 @@ const renderUseCaseFilters = () => {
    ============================================================ */
 const attachCardHandlers = () => {
   $$('.tool-card').forEach((card) => {
-    card.addEventListener('click', () => openModal(card.dataset.id));
+    const handler = () => {
+      if (card.dataset.kind === 'leaderboard') openLeaderboardModal(card.dataset.id);
+      else openModal(card.dataset.id);
+    };
+    card.addEventListener('click', handler);
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openModal(card.dataset.id);
+        handler();
       }
     });
   });
@@ -586,10 +727,92 @@ const openModal = (toolId) => {
   $('#modal-close').focus();
 };
 
+  else renderCards();
+};
+
+const relatedLeaderboardTools = (lb) => {
+  const tools = (lb.relatedTools || []).map(getTool).filter(Boolean);
+  if (!tools.length) return '';
+  return `
+    <div class="modal-section">
+      <div class="modal-section-title">Related Benchmark Tools</div>
+      <div class="related-list">
+        ${tools.map((t) => `
+          <button class="related-chip" type="button" data-related-tool="${t.id}">
+            ${t.shortName || t.name}
+          </button>`).join('')}
+      </div>
+    </div>`;
+};
+
+const openLeaderboardModal = (lbId) => {
+  const lb = getLeaderboard(lbId);
+  if (!lb) return;
+  const cat = getCategory(lb.category);
+
+  $('#modal-inner').innerHTML = `
+    <div class="modal-hero" style="background:${lb.logo ? 'var(--surface)' : cat.color}">
+      ${lb.logo
+        ? `<img src="${lb.logo}" alt="${lb.name} logo" class="modal-logo" onerror="this.style.display='none'">`
+        : `<span class="modal-initials">${lb.initials}</span>`}
+      ${lb.org ? `<span class="modal-org"${lb.logo ? ` style="color:var(--text-muted)"` : ''}>${lb.org}</span>` : ''}
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <div>
+          <div class="modal-name" id="modal-title">${lb.name}</div>
+          <div class="modal-cat" style="color:${cat.color}">${cat.name}</div>
+        </div>
+        <div class="modal-badges">${lbBadge()}${statusBadge(lb.status)}</div>
+      </div>
+      <p class="modal-desc">${lb.description}</p>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Benchmark Type</div>
+        <div class="modal-badges">${lb.types.map(typeBadge).join('')}</div>
+      </div>
+
+      ${lb.metrics?.length ? `
+        <div class="modal-section">
+          <div class="modal-section-title">Ranked Metrics</div>
+          <ul class="metric-list">${lb.metrics.map((m) => `<li>${m}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      ${lb.lastReviewed ? `
+        <div class="modal-section">
+          <div class="modal-section-title">Last Reviewed</div>
+          <span class="license-tag">${fmtDate(lb.lastReviewed)}</span>
+        </div>` : ''}
+
+      ${relatedLeaderboardTools(lb)}
+
+      <div class="modal-actions">
+        <a href="${lb.url}" target="_blank" rel="noopener noreferrer" class="modal-cta">
+          Visit Leaderboard ${extIcon}
+        </a>
+      </div>
+    </div>`;
+
+  $$('[data-related-tool]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      closeModal();
+      setSection('tools');
+      openModal(btn.dataset.relatedTool);
+    });
+  });
+
+  lastFocused = document.activeElement;
+  $('#modal-backdrop').hidden = false;
+  document.body.classList.add('no-scroll');
+  setUrlLeaderboard(lbId);
+  $('#modal-close').focus();
+};
+
 const closeModal = () => {
   $('#modal-backdrop').hidden = true;
   document.body.classList.remove('no-scroll');
   setUrlTool(null);
+  setUrlLeaderboard(null);
   if (lastFocused) lastFocused.focus();
 };
 
@@ -738,11 +961,36 @@ const applyFilterUI = () => {
     });
   });
   $('#search').value = state.search;
+  $('#search').placeholder = isToolsSection() ? 'Search tools…' : 'Search leaderboards…';
   $('#sort').value = state.sort;
+  const starsOpt = $('#sort option[value="stars"]');
+  if (starsOpt) starsOpt.hidden = !isToolsSection();
+  if (!isToolsSection() && state.sort === 'stars') state.sort = 'default';
   $('#btn-comfy').classList.toggle('active', state.view === 'comfy');
   $('#btn-dense').classList.toggle('active', state.view === 'dense');
   $('#btn-comfy').setAttribute('aria-pressed', state.view === 'comfy');
   $('#btn-dense').setAttribute('aria-pressed', state.view === 'dense');
+};
+
+const updateSectionUI = () => {
+  $('#btn-section-tools').classList.toggle('active', isToolsSection());
+  $('#btn-section-leaderboards').classList.toggle('active', !isToolsSection());
+  $('#btn-section-tools').setAttribute('aria-pressed', isToolsSection());
+  $('#btn-section-leaderboards').setAttribute('aria-pressed', !isToolsSection());
+  $('#hw-filter-section').hidden = !isToolsSection();
+  $('#btn-wizard').hidden = !isToolsSection();
+  $('#compare-bar').hidden = !isToolsSection() || state.compare.length === 0;
+  document.body.classList.toggle('has-compare-bar', isToolsSection() && state.compare.length > 0);
+  applyFilterUI();
+};
+
+const setSection = (section) => {
+  if (state.section === section) return;
+  state.section = section;
+  state.compare = [];
+  renderCompareBar();
+  renderContent();
+  syncUrl();
 };
 
 const setFilter = (group, value) => {
@@ -758,8 +1006,7 @@ const clearFilters = () => {
   state.status = 'all';
   state.search = '';
   applyFilterUI();
-  renderCards();
-  renderCatNav();
+  renderContent();
   syncUrl();
 };
 
@@ -768,10 +1015,9 @@ const clearFilters = () => {
    ============================================================ */
 const init = () => {
   renderUseCaseFilters();
-  const deepTool = readUrl();
+  const deep = readUrl();
   applyFilterUI();
-  renderCards();
-  renderCatNav();
+  renderContent();
   renderCompareBar();
 
   $$('.filter-item').forEach((item) => {
@@ -789,16 +1035,18 @@ const init = () => {
 
   $('#sort').addEventListener('change', (e) => {
     state.sort = e.target.value;
-    renderCards();
+    renderContent();
     syncUrl();
   });
+
+  $('#btn-section-tools').addEventListener('click', () => setSection('tools'));
+  $('#btn-section-leaderboards').addEventListener('click', () => setSection('leaderboards'));
 
   $('#btn-comfy').addEventListener('click', () => {
     if (state.view === 'comfy') return;
     state.view = 'comfy';
     applyFilterUI();
-    renderCards();
-    renderCatNav();
+    renderContent();
     syncUrl();
   });
 
@@ -806,8 +1054,7 @@ const init = () => {
     if (state.view === 'dense') return;
     state.view = 'dense';
     applyFilterUI();
-    renderCards();
-    renderCatNav();
+    renderContent();
     syncUrl();
   });
 
@@ -849,7 +1096,13 @@ const init = () => {
     else if (!$('#modal-backdrop').hidden) closeModal();
   });
 
-  if (deepTool && getTool(deepTool)) openModal(deepTool);
+  if (deep.tool && getTool(deep.tool)) {
+    setSection('tools');
+    openModal(deep.tool);
+  } else if (deep.leaderboard && getLeaderboard(deep.leaderboard)) {
+    setSection('leaderboards');
+    openLeaderboardModal(deep.leaderboard);
+  }
 };
 
 document.addEventListener('DOMContentLoaded', init);

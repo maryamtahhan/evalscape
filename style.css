@@ -248,6 +248,40 @@ body.no-scroll { overflow: hidden; }
   border: 0;
 }
 
+.section-group {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.section-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.section-btn:hover { background: var(--bg); color: var(--text-1); }
+.section-btn.active { background: var(--link); color: #fff; }
+
+.badge.lb-badge {
+  background: #FEF3C7;
+  color: #B45309;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+@media (prefers-color-scheme: dark) {
+  .badge.lb-badge { background: #451a03; color: #fcd34d; }
+}
+.card-hero .badge.lb-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 .header-btn {
   background: var(--link);
   color: #fff;
@@ -1149,6 +1183,7 @@ body.has-compare-bar .main-content { padding-bottom: 100px; }
   #search         { width: 150px; }
   .sort-wrap      { display: none; }
   #btn-wizard     { display: none; }
+  .section-group  { order: -1; width: 100%; }
 }
 
 @media (max-width: 480px) {

@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - 'data.js'
+      - 'leaderboards.js'
       - 'schema/**'
       - 'scripts/validate.mjs'
   push:
     branches: [main]
     paths:
       - 'data.js'
+      - 'leaderboards.js'
       - 'schema/**'
       - 'scripts/validate.mjs'
 

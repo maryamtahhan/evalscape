@@ -9,6 +9,7 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 ## Features
 
 - **Search & filter** by hardware, benchmark type, use case, and status
+- **Tools & Leaderboards** — toggle between eval frameworks and public model ranking sites
 - **Sort** by stars, name, or last-reviewed date
 - **Shareable URLs** — filters and deep links persist in the query string (`?type=rag&hw=gpu&tool=ragas`)
 - **Find a tool wizard** — answer 3 questions to get recommendations
@@ -21,7 +22,7 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 
 ## What's in it
 
-47 tools across 10 categories:
+47 tools across 10 categories, plus **31 public leaderboards** covering model rankings for quality, code, agents, RAG, embeddings, audio, multimodal, inference, safety, and security.
 
 | Category | What it covers |
 |---|---|
@@ -125,8 +126,18 @@ npm run refresh-stars
 | `status` | `?status=active` | Tool status |
 | `sort` | `?sort=stars` | Sort order |
 | `view` | `?view=dense` | View mode |
+| `section` | `?section=leaderboards` | Show leaderboards instead of tools |
 | `tool` | `?tool=ragas` | Open tool detail modal |
+| `leaderboard` | `?leaderboard=chatbot-arena` | Open leaderboard detail modal |
 | `compare` | `?compare=ragas,deepeval` | Pre-select compare list |
+
+---
+
+## Adding a leaderboard
+
+Add an entry to the `leaderboards` array in `leaderboards.js` (see existing entries for the full shape). Each leaderboard links to a public ranking site and can reference related eval tools from `data.js` via `relatedTools`.
+
+Run `npm run validate` after adding entries.
 
 ---
 

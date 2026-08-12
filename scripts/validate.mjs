@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Extract LANDSCAPE from data.js and validate against schema/landscape.schema.json
+ * Extract LANDSCAPE from data.js + leaderboards.js and validate against schema.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -14,10 +14,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
 
 const dataJs = readFileSync(join(root, 'data.js'), 'utf8');
+const leaderboardsJs = readFileSync(join(root, 'leaderboards.js'), 'utf8');
 const schema = JSON.parse(readFileSync(join(root, 'schema/landscape.schema.json'), 'utf8'));
 
-// Evaluate data.js in a sandboxed context
-const fn = new Function(`${dataJs}; return LANDSCAPE;`);
+const fn = new Function(`${dataJs}\n${leaderboardsJs}; return LANDSCAPE;`);
 const landscape = fn();
 
 const ajv = new Ajv({ allErrors: true, strict: false });
@@ -32,7 +32,6 @@ if (!validate(landscape)) {
   process.exit(1);
 }
 
-// Cross-reference checks
 const categoryIds = new Set(landscape.categories.map((c) => c.id));
 const toolIds = new Set(landscape.tools.map((t) => t.id));
 
@@ -49,10 +48,30 @@ for (const tool of landscape.tools) {
   }
 }
 
+for (const lb of landscape.leaderboards || []) {
+  if (!categoryIds.has(lb.category)) {
+    console.error(`Leaderboard "${lb.id}" references unknown category "${lb.category}"`);
+    process.exit(1);
+  }
+  for (const rel of lb.relatedTools || []) {
+    if (!toolIds.has(rel)) {
+      console.error(`Leaderboard "${lb.id}" references unknown related tool "${rel}"`);
+      process.exit(1);
+    }
+  }
+}
+
 const dupes = landscape.tools.map((t) => t.id).filter((id, i, arr) => arr.indexOf(id) !== i);
 if (dupes.length) {
   console.error(`Duplicate tool ids: ${[...new Set(dupes)].join(', ')}`);
   process.exit(1);
 }
 
-console.log(`Validated ${landscape.tools.length} tools in ${landscape.categories.length} categories.`);
+const lbDupes = (landscape.leaderboards || []).map((lb) => lb.id).filter((id, i, arr) => arr.indexOf(id) !== i);
+if (lbDupes.length) {
+  console.error(`Duplicate leaderboard ids: ${[...new Set(lbDupes)].join(', ')}`);
+  process.exit(1);
+}
+
+const lbCount = landscape.leaderboards?.length || 0;
+console.log(`Validated ${landscape.tools.length} tools and ${lbCount} leaderboards in ${landscape.categories.length} categories.`);
