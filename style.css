@@ -28,11 +28,17 @@ html { scroll-behavior: smooth; }
   --gpu-fg:   #C2410C;
 
   /* Type badge colours */
-  --t-online-bg:  #DCFCE7; --t-online-fg:  #15803D;
-  --t-offline-bg: #F1F5F9; --t-offline-fg: #475569;
-  --t-emb-bg:     #EDE9FE; --t-emb-fg:     #6D28D9;
-  --t-audio-bg:   #CCFBF1; --t-audio-fg:   #0F766E;
-  --t-sec-bg:     #FEE2E2; --t-sec-fg:     #B91C1C;
+  --t-online-bg:   #DCFCE7; --t-online-fg:   #15803D;
+  --t-offline-bg:  #F1F5F9; --t-offline-fg:  #475569;
+  --t-quality-bg:  #FEF3C7; --t-quality-fg:  #B45309;
+  --t-code-bg:     #E0F2FE; --t-code-fg:     #0369A1;
+  --t-agent-bg:    #FCE7F3; --t-agent-fg:    #9D174D;
+  --t-rag-bg:      #F0FDFA; --t-rag-fg:      #0D9488;
+  --t-emb-bg:      #EDE9FE; --t-emb-fg:      #6D28D9;
+  --t-audio-bg:    #CCFBF1; --t-audio-fg:    #0F766E;
+  --t-safety-bg:   #FDF4FF; --t-safety-fg:   #A21CAF;
+  --t-mm-bg:       #EEF2FF; --t-mm-fg:       #4338CA;
+  --t-sec-bg:      #FEE2E2; --t-sec-fg:      #B91C1C;
 
   /* Layout */
   --sidebar-w:  248px;
@@ -74,11 +80,17 @@ html { scroll-behavior: smooth; }
     --cpu-bg:  #1e3a5f; --cpu-fg:  #93C5FD;
     --gpu-bg:  #431407; --gpu-fg:  #FDBA74;
 
-    --t-online-bg:  #052e16; --t-online-fg:  #86efac;
-    --t-offline-bg: #1e293b; --t-offline-fg: #94a3b8;
-    --t-emb-bg:     #2e1065; --t-emb-fg:     #c4b5fd;
-    --t-audio-bg:   #042f2e; --t-audio-fg:   #5eead4;
-    --t-sec-bg:     #450a0a; --t-sec-fg:     #fca5a5;
+    --t-online-bg:   #052e16; --t-online-fg:   #86efac;
+    --t-offline-bg:  #1e293b; --t-offline-fg:  #94a3b8;
+    --t-quality-bg:  #451a03; --t-quality-fg:  #fcd34d;
+    --t-code-bg:     #082f49; --t-code-fg:     #7dd3fc;
+    --t-agent-bg:    #4c0519; --t-agent-fg:    #fbcfe8;
+    --t-rag-bg:      #063b39; --t-rag-fg:      #2dd4bf;
+    --t-emb-bg:      #2e1065; --t-emb-fg:      #c4b5fd;
+    --t-audio-bg:    #042f2e; --t-audio-fg:    #5eead4;
+    --t-safety-bg:   #3b0764; --t-safety-fg:   #e879f9;
+    --t-mm-bg:       #1e1b4b; --t-mm-fg:       #a5b4fc;
+    --t-sec-bg:      #450a0a; --t-sec-fg:      #fca5a5;
   }
 }
 
@@ -301,14 +313,20 @@ body.no-scroll { overflow: hidden; }
   border: 2px solid transparent;
   flex-shrink: 0;
 }
-.filter-dot.hw-cpu    { background: var(--cpu-fg); }
-.filter-dot.hw-gpu    { background: var(--gpu-fg); }
-.filter-dot.hw-both   { background: linear-gradient(135deg, var(--cpu-fg) 50%, var(--gpu-fg) 50%); }
-.filter-dot.t-online  { background: var(--t-online-fg); }
-.filter-dot.t-offline { background: var(--text-3); }
-.filter-dot.t-emb     { background: var(--t-emb-fg); }
-.filter-dot.t-audio   { background: var(--t-audio-fg); }
-.filter-dot.t-sec     { background: var(--t-sec-fg); }
+.filter-dot.hw-cpu     { background: var(--cpu-fg); }
+.filter-dot.hw-gpu     { background: var(--gpu-fg); }
+.filter-dot.hw-both    { background: linear-gradient(135deg, var(--cpu-fg) 50%, var(--gpu-fg) 50%); }
+.filter-dot.t-online   { background: var(--t-online-fg); }
+.filter-dot.t-offline  { background: var(--text-3); }
+.filter-dot.t-quality  { background: var(--t-quality-fg); }
+.filter-dot.t-code     { background: var(--t-code-fg); }
+.filter-dot.t-agent    { background: var(--t-agent-fg); }
+.filter-dot.t-rag      { background: var(--t-rag-fg); }
+.filter-dot.t-emb      { background: var(--t-emb-fg); }
+.filter-dot.t-audio    { background: var(--t-audio-fg); }
+.filter-dot.t-safety   { background: var(--t-safety-fg); }
+.filter-dot.t-mm       { background: var(--t-mm-fg); }
+.filter-dot.t-sec      { background: var(--t-sec-fg); }
 
 /* Category nav */
 .cat-nav { list-style: none; display: flex; flex-direction: column; gap: 1px; }
@@ -574,13 +592,38 @@ body.no-scroll { overflow: hidden; }
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
-.badge.hw-cpu    { background: var(--cpu-bg);     color: var(--cpu-fg); }
-.badge.hw-gpu    { background: var(--gpu-bg);     color: var(--gpu-fg); }
-.badge.t-online  { background: var(--t-online-bg); color: var(--t-online-fg); }
-.badge.t-offline { background: var(--t-offline-bg);color: var(--t-offline-fg); }
-.badge.t-emb     { background: var(--t-emb-bg);   color: var(--t-emb-fg); }
-.badge.t-audio   { background: var(--t-audio-bg);  color: var(--t-audio-fg); }
-.badge.t-sec     { background: var(--t-sec-bg);   color: var(--t-sec-fg); }
+.badge.hw-cpu     { background: var(--cpu-bg);        color: var(--cpu-fg); }
+.badge.hw-gpu     { background: var(--gpu-bg);        color: var(--gpu-fg); }
+.badge.t-online   { background: var(--t-online-bg);   color: var(--t-online-fg); }
+.badge.t-offline  { background: var(--t-offline-bg);  color: var(--t-offline-fg); }
+.badge.t-quality  { background: var(--t-quality-bg);  color: var(--t-quality-fg); }
+.badge.t-code     { background: var(--t-code-bg);     color: var(--t-code-fg); }
+.badge.t-agent    { background: var(--t-agent-bg);    color: var(--t-agent-fg); }
+.badge.t-rag      { background: var(--t-rag-bg);      color: var(--t-rag-fg); }
+.badge.t-emb      { background: var(--t-emb-bg);      color: var(--t-emb-fg); }
+.badge.t-audio    { background: var(--t-audio-bg);    color: var(--t-audio-fg); }
+.badge.t-safety   { background: var(--t-safety-bg);   color: var(--t-safety-fg); }
+.badge.t-mm       { background: var(--t-mm-bg);       color: var(--t-mm-fg); }
+.badge.t-sec      { background: var(--t-sec-bg);      color: var(--t-sec-fg); }
+
+/* ============================================================
+   CARD GITHUB STATS
+   ============================================================ */
+.card-stats {
+  display: flex;
+  gap: 12px;
+  padding-top: 2px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 2px;
+}
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+}
 
 /* ============================================================
    EMPTY STATE
@@ -738,6 +781,22 @@ body.no-scroll { overflow: hidden; }
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-2);
+}
+
+.modal-gh-stats {
+  display: flex;
+  gap: 20px;
+}
+.modal-gh-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.modal-gh-stat strong {
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .modal-cta {

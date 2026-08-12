@@ -5,7 +5,7 @@
    ============================================================ */
 const state = {
   hw:     'all',   // 'all' | 'cpu' | 'gpu' | 'both'
-  type:   'all',   // 'all' | 'online' | 'offline' | 'embedding' | 'audio' | 'security'
+  type:   'all',   // 'all' | 'online' | 'offline' | 'quality' | 'code' | 'agent' | 'rag' | 'embedding' | 'audio' | 'safety' | 'multimodal' | 'security'
   search: '',
   view:   'comfy', // 'comfy' | 'dense'
 };
@@ -46,23 +46,48 @@ const isVisible = (tool) => {
    ============================================================ */
 const HW_LABELS  = { cpu: 'CPU', gpu: 'GPU' };
 const TYPE_LABELS = {
-  online:    'Online',
-  offline:   'Offline',
-  embedding: 'Embedding',
-  audio:     'Audio',
-  security:  'Security',
+  online:     'Online',
+  offline:    'Offline',
+  quality:    'LLM Quality',
+  code:       'Code Gen',
+  agent:      'Agent',
+  rag:        'RAG',
+  embedding:  'Embedding',
+  audio:      'Audio',
+  safety:     'Safety',
+  multimodal: 'Multimodal',
+  security:   'Security',
 };
 const TYPE_CLASS = {
-  online:    't-online',
-  offline:   't-offline',
-  embedding: 't-emb',
-  audio:     't-audio',
-  security:  't-sec',
+  online:     't-online',
+  offline:    't-offline',
+  quality:    't-quality',
+  code:       't-code',
+  agent:      't-agent',
+  rag:        't-rag',
+  embedding:  't-emb',
+  audio:      't-audio',
+  safety:     't-safety',
+  multimodal: 't-mm',
+  security:   't-sec',
 };
 
 const hwBadge   = (hw)   => `<span class="badge hw-${hw}">${HW_LABELS[hw]}</span>`;
 const typeBadge = (type) =>
   `<span class="badge ${TYPE_CLASS[type] || ''}">${TYPE_LABELS[type] || type}</span>`;
+
+const fmtNum = (n) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`;
+
+const starIcon = `<svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>`;
+const forkIcon = `<svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg>`;
+
+const statsRow = (tool) =>
+  (tool.stars || tool.forks)
+    ? `<div class="card-stats">
+         <span class="stat-item">${starIcon}${fmtNum(tool.stars)}</span>
+         <span class="stat-item">${forkIcon}${fmtNum(tool.forks)}</span>
+       </div>`
+    : '';
 
 /* ============================================================
    Card templates
@@ -89,6 +114,7 @@ const cardComfy = (tool, cat) => `
         ${tool.hardware.map(hwBadge).join('')}
         ${tool.types.map(typeBadge).join('')}
       </div>
+      ${statsRow(tool)}
     </div>
   </div>`;
 
@@ -142,7 +168,18 @@ const renderCards = () => {
 };
 
 const catEmoji = (id) => {
-  const map = { inference: '⚡', embedding: '🔢', audio: '🎙️', security: '🔒' };
+  const map = {
+    inference:  '⚡',
+    quality:    '📊',
+    code:       '💻',
+    agent:      '🤖',
+    rag:        '🔍',
+    embedding:  '🔢',
+    audio:      '🎙️',
+    safety:     '🛡️',
+    multimodal: '🖼️',
+    security:   '🔒',
+  };
   return map[id] || '📊';
 };
 
@@ -263,6 +300,18 @@ const openModal = (toolId) => {
           ? `<div class="modal-section">
                <div class="modal-section-title">License</div>
                <span class="license-tag">${tool.license}</span>
+             </div>`
+          : ''
+      }
+
+      ${
+        (tool.stars || tool.forks)
+          ? `<div class="modal-section">
+               <div class="modal-section-title">GitHub</div>
+               <div class="modal-gh-stats">
+                 <span class="modal-gh-stat">${starIcon}<strong>${fmtNum(tool.stars)}</strong> stars</span>
+                 <span class="modal-gh-stat">${forkIcon}<strong>${fmtNum(tool.forks)}</strong> forks</span>
+               </div>
              </div>`
           : ''
       }
