@@ -530,7 +530,26 @@ LANDSCAPE.leaderboards = [
     metrics: ['Throughput (tok/s)', 'Latency percentiles', 'Cost per million tokens', 'Hardware efficiency'],
     tags: ['semianalysis', 'gpu', 'cost', 'frameworks'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-13',
+  },
+
+  // ── LLM Routing ────────────────────────────────────────────────────────
+  {
+    id: 'routerarena-leaderboard',
+    name: 'RouterArena Leaderboard',
+    shortName: 'RouterArena',
+    initials: 'RA',
+    description:
+      'Live leaderboard and submission platform for LLM routers — evaluates open-source and commercial routers on 8,400 questions across nine domains with accuracy, cost, optimality, robustness, and latency metrics.',
+    category: 'inference',
+    types: ['online'],
+    url: 'https://routeworks.github.io/',
+    org: 'RouteWorks',
+    relatedTools: ['routerbench', 'llmrouterbench', 'routellm', 'vllm-semantic-router'],
+    metrics: ['Arena score', 'Accuracy', 'Cost per 1k queries', 'Optimal selection', 'Robustness', 'Latency'],
+    tags: ['routing', 'llm-router', 'cost', 'leaderboard', 'arena'],
+    status: 'active',
+    lastReviewed: '2026-08-13',
   },
 
   // ── Safety & Security ────────────────────────────────────────────────────

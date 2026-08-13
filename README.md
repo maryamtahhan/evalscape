@@ -24,11 +24,11 @@ A visual landscape of AI model benchmarking tools and evaluation frameworks — 
 
 ## What's in it
 
-54 tools across 11 categories, plus **32 public leaderboards** and **10 evaluation standards** covering model rankings, governance frameworks (NIST AI RMF, ISO 42001), industry benchmarks (MLPerf, SPEC ML), and regulations (EU AI Act).
+59 tools across 11 categories, plus **33 public leaderboards** and **14 evaluation standards** covering model rankings, governance frameworks (NIST AI RMF, ISO 42001), industry benchmarks (MLPerf, SPEC ML), and regulations (EU AI Act).
 
 | Category | What it covers |
 |---|---|
-| ⚡ Inference Benchmarking | Throughput, latency, TTFT, ITL under load |
+| ⚡ Inference Benchmarking | Throughput, latency, TTFT, ITL, and LLM routing (cost–quality trade-offs) |
 | 🔁 Benchmark Orchestration | K8s/OpenShift pipelines, Ansible matrices, MLPerf automation, and results tracking |
 | 📊 LLM Quality & Accuracy | Holistic model evaluation across reasoning, knowledge, fairness |
 | 💻 Code Generation | Functional correctness, patch resolution, real-world coding tasks |
