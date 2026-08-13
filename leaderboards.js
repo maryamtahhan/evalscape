@@ -309,6 +309,24 @@ LANDSCAPE.leaderboards = [
     status: 'active',
     lastReviewed: '2026-08-12',
   },
+  {
+    id: 'coding-agent-leaderboard',
+    name: 'Coding Agent Leaderboard',
+    shortName: 'Coding Agent LB',
+    initials: 'CA',
+    logo: 'logos/huggingface.png',
+    description:
+      'Hugging Face leaderboard ranking coding agents across SWE-bench Verified, LiveCodeBench, and other software engineering benchmarks — aggregates results from multiple evaluation sources for unified agent comparison.',
+    category: 'agent',
+    types: ['code', 'agent'],
+    url: 'https://huggingface.co/spaces/taagarwa/coding-agent-leaderboard',
+    org: 'Hugging Face',
+    relatedTools: ['swe-bench', 'bfcl', 'harbor', 'tau-bench'],
+    metrics: ['SWE-bench Verified', 'RH SWE Bench', 'Agent ranking'],
+    tags: ['coding-agents', 'software-engineering', 'huggingface', 'aggregated'],
+    status: 'active',
+    lastReviewed: '2026-08-13',
+  },
 
   // ── RAG & Embeddings ─────────────────────────────────────────────────────
   {
