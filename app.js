@@ -55,6 +55,7 @@ const MODEL_SCOPE_LABELS = {
 
 const WIZARD_GOALS = [
   { id: 'inference',  label: 'Inference performance', types: ['online', 'offline'] },
+  { id: 'model-routing', label: 'LLM model routing', types: ['online', 'offline', 'multimodal'] },
   { id: 'quality',    label: 'Model quality & accuracy', types: ['quality'] },
   { id: 'code',       label: 'Code generation', types: ['code'] },
   { id: 'agent',      label: 'Agents & tool use', types: ['agent'] },
@@ -490,7 +491,7 @@ const standardCardDense = (std, cat) => `
   </div>`;
 
 const catEmoji = (id) => ({
-  inference: '⚡', 'benchmark-orchestration': '🔁', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
+  inference: '⚡', 'model-routing': '🔀', 'benchmark-orchestration': '🔁', quality: '📊', code: '💻', agent: '🤖', rag: '🔍',
   embedding: '🔢', audio: '🎙️', safety: '🛡️', multimodal: '🖼️', security: '🔒',
 }[id] || '📊');
 

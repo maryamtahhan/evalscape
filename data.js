@@ -10,6 +10,14 @@ const LANDSCAPE = {
       colorDark: '#3B82F6',
     },
     {
+      id: 'model-routing',
+      name: 'LLM Model Routing',
+      description:
+        'Benchmarks and frameworks for multi-model routing — cost–quality trade-offs, router accuracy, optimality, and production gateways that select the best LLM per request.',
+      color: '#6366F1',
+      colorDark: '#818CF8',
+    },
+    {
       id: 'benchmark-orchestration',
       name: 'Benchmark Orchestration',
       description:
@@ -356,6 +364,8 @@ const LANDSCAPE = {
       ],
       tags: ['ollama', 'local', 'benchmark', 'synchronous'],
     },
+
+    // ── LLM Model Routing ──────────────────────────────────────────────────
     {
       id: 'routerbench',
       name: 'RouterBench',
@@ -365,7 +375,7 @@ const LANDSCAPE = {
       forks: 33,
       description:
         'Martian and UC Berkeley benchmark suite for multi-LLM routing — 405k+ precomputed inference outcomes across eight task domains (reasoning, math, coding, RAG) enabling offline comparison of routing policies without live model queries.',
-      category: 'inference',
+      category: 'model-routing',
       hardware: ['cpu', 'gpu'],
       types: ['online', 'offline'],
       url: 'https://github.com/withmartian/routerbench',
@@ -390,7 +400,7 @@ const LANDSCAPE = {
       forks: 15,
       description:
         'Large-scale unified benchmark and framework for LLM routing — 400k+ instances across 21 datasets and 33 candidate models with ten representative routing baselines and performance–cost trade-off metrics.',
-      category: 'inference',
+      category: 'model-routing',
       hardware: ['cpu', 'gpu'],
       types: ['online', 'offline'],
       url: 'https://github.com/ynulihao/LLMRouterBench',
@@ -414,7 +424,7 @@ const LANDSCAPE = {
       forks: 415,
       description:
         'Berkeley LMSYS framework for serving and evaluating LLM routers — routes queries between strong and weak models using preference-trained matrix factorization, BERT, or Elo strategies with OpenAI-compatible serving and up to 85% cost reduction on MT-Bench.',
-      category: 'inference',
+      category: 'model-routing',
       hardware: ['cpu', 'gpu'],
       types: ['online'],
       url: 'https://github.com/lm-sys/RouteLLM',
@@ -439,7 +449,7 @@ const LANDSCAPE = {
       forks: 805,
       description:
         'vLLM project signal-driven Mixture-of-Models router — classifies requests via semantic, safety, and modality signals, then routes across heterogeneous local and cloud backends with Envoy/Kubernetes deployment and OpenAI-compatible APIs.',
-      category: 'inference',
+      category: 'model-routing',
       hardware: ['cpu', 'gpu'],
       types: ['online', 'multimodal'],
       url: 'https://github.com/vllm-project/semantic-router',
@@ -453,7 +463,32 @@ const LANDSCAPE = {
         'Latency overhead',
         'Safety gate pass rate',
       ],
-      tags: ['vllm', 'semantic-router', 'routing', 'mixture-of-models', 'kubernetes'],
+      tags: ['vllm', 'semantic-router', 'routing', 'mixture-of-models', 'kubernetes', 'cost'],
+    },
+    {
+      id: 'mmr-bench',
+      name: 'MMR-Bench',
+      shortName: 'MMR-Bench',
+      initials: 'MR',
+      stars: 109,
+      forks: 3,
+      description:
+        'Offline cost-aware benchmark for multimodal LLM routing — evaluates routing policies across OCR, VQA, and multimodal math tasks with precomputed MLLM outputs, normalized inference costs, and cost–accuracy Pareto analysis.',
+      category: 'model-routing',
+      hardware: ['cpu', 'gpu'],
+      types: ['multimodal', 'online'],
+      url: 'https://github.com/Hunter-Wrynn/MMR-Bench',
+      paper: 'https://arxiv.org/abs/2601.17814',
+      huggingface: 'https://huggingface.co/datasets/gh0stHunter/MMR-Bench',
+      license: 'Apache 2.0',
+      org: 'MMR-Bench',
+      metrics: [
+        'nAUC (cost–accuracy)',
+        'Cross-dataset generalization',
+        'Modality transfer score',
+        'Oracle cost gap',
+      ],
+      tags: ['mmr-bench', 'routing', 'multimodal', 'cost', 'mllm'],
     },
 
     // ── LLM Quality & Accuracy ─────────────────────────────────────────────
@@ -1272,31 +1307,6 @@ const LANDSCAPE = {
         'Per-dimension score',
       ],
       tags: ['seed-bench', 'tencent', 'multimodal', 'video'],
-    },
-    {
-      id: 'mmr-bench',
-      name: 'MMR-Bench',
-      shortName: 'MMR-Bench',
-      initials: 'MR',
-      stars: 109,
-      forks: 3,
-      description:
-        'Offline cost-aware benchmark for multimodal LLM routing — evaluates routing policies across OCR, VQA, and multimodal math tasks with precomputed MLLM outputs, normalized inference costs, and cost–accuracy Pareto analysis.',
-      category: 'multimodal',
-      hardware: ['cpu', 'gpu'],
-      types: ['multimodal', 'online'],
-      url: 'https://github.com/Hunter-Wrynn/MMR-Bench',
-      paper: 'https://arxiv.org/abs/2601.17814',
-      huggingface: 'https://huggingface.co/datasets/gh0stHunter/MMR-Bench',
-      license: 'Apache 2.0',
-      org: 'MMR-Bench',
-      metrics: [
-        'nAUC (cost–accuracy)',
-        'Cross-dataset generalization',
-        'Modality transfer score',
-        'Oracle cost gap',
-      ],
-      tags: ['mmr-bench', 'routing', 'multimodal', 'cost', 'mllm'],
     },
 
     // ── Production & Observability ─────────────────────────────────────────

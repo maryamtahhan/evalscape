@@ -559,7 +559,7 @@ LANDSCAPE.leaderboards = [
     initials: 'RA',
     description:
       'Live leaderboard and submission platform for LLM routers — evaluates open-source and commercial routers on 8,400 questions across nine domains with accuracy, cost, optimality, robustness, and latency metrics.',
-    category: 'inference',
+    category: 'model-routing',
     types: ['online'],
     url: 'https://routeworks.github.io/',
     org: 'RouteWorks',
