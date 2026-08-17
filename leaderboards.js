@@ -19,7 +19,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Elo rating', 'Win rate', 'Confidence intervals', 'Style control'],
     tags: ['human-preference', 'chat', 'elo', 'arena'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'open-llm-leaderboard',
@@ -37,7 +37,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Average score', 'MMLU', 'ARC', 'HellaSwag', 'TruthfulQA', 'GSM8K'],
     tags: ['huggingface', 'open-models', 'nlp', 'archived'],
     status: 'archived',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'hf-find-a-leaderboard',
@@ -54,7 +54,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Community rankings', 'Task-specific scores'],
     tags: ['huggingface', 'directory', 'community'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'helm-leaderboard',
@@ -72,7 +72,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Accuracy', 'Calibration', 'Robustness', 'Fairness', 'Efficiency'],
     tags: ['stanford', 'holistic', 'multi-metric'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'opencompass-leaderboard',
@@ -90,7 +90,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Composite score', 'Per-benchmark accuracy', 'Multilingual scores'],
     tags: ['opencompass', 'multilingual', 'comprehensive'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'artificial-analysis-models',
@@ -108,7 +108,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Intelligence index', 'Price per 1M tokens', 'Latency', 'Throughput'],
     tags: ['frontier-models', 'api', 'cost', 'latency'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'livebench',
@@ -125,7 +125,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Overall score', 'Math', 'Reasoning', 'Coding', 'Language', 'IF'],
     tags: ['contamination-free', 'monthly-refresh'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'eq-bench',
@@ -142,7 +142,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['EQ score', 'Emotional understanding', 'Social reasoning'],
     tags: ['emotional-intelligence', 'creative-writing'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'alpaca-eval',
@@ -159,7 +159,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Win rate vs GPT-4', 'Length-controlled win rate', 'Cost'],
     tags: ['instruction-following', 'llm-judge', 'automatic'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Code ─────────────────────────────────────────────────────────────────
@@ -179,7 +179,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['% Issues resolved', 'Verified', 'Lite', 'Multimodal'],
     tags: ['software-engineering', 'github-issues', 'agents'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'livecodebench-leaderboard',
@@ -197,7 +197,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Pass@1', 'Code generation', 'Test output prediction', 'Code repair'],
     tags: ['contamination-free', 'competitive-programming'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'bigcodebench-leaderboard',
@@ -215,7 +215,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Pass@1', 'Complete code', 'Self-repair'],
     tags: ['python', 'library-use', 'complex-tasks', 'archived'],
     status: 'archived',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Agents ───────────────────────────────────────────────────────────────
@@ -235,7 +235,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Overall accuracy', 'Simple', 'Parallel', 'Multiple', 'Irrelevance'],
     tags: ['function-calling', 'tool-use', 'api'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'agentbench-leaderboard',
@@ -253,7 +253,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Overall score', 'OS', 'DB', 'KG', 'Digital card game', 'Web shopping'],
     tags: ['multi-environment', 'agent-evaluation'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'webarena-leaderboard',
@@ -271,7 +271,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Task success rate', 'Step efficiency'],
     tags: ['web-browsing', 'autonomous-agents'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'tau-bench-leaderboard',
@@ -289,7 +289,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Pass^k reliability', 'Retail domain', 'Airline domain'],
     tags: ['customer-service', 'tool-use', 'reliability'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'gaia-leaderboard',
@@ -307,7 +307,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Level 1 accuracy', 'Level 2 accuracy', 'Level 3 accuracy'],
     tags: ['general-assistant', 'tool-use', 'reasoning'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'coding-agent-leaderboard',
@@ -325,7 +325,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['SWE-bench Verified', 'RH SWE Bench', 'Agent ranking'],
     tags: ['coding-agents', 'software-engineering', 'huggingface', 'aggregated'],
     status: 'active',
-    lastReviewed: '2026-08-13',
+    lastReviewed: '2026-08-17',
   },
 
   // ── RAG & Embeddings ─────────────────────────────────────────────────────
@@ -345,7 +345,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Mean task score', 'Retrieval', 'Classification', 'Clustering', 'STS'],
     tags: ['embeddings', 'retrieval', 'huggingface'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'c-mteb-leaderboard',
@@ -362,7 +362,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Chinese retrieval', 'Classification', 'Clustering'],
     tags: ['chinese', 'embeddings', 'multilingual'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'air-bench-leaderboard',
@@ -380,7 +380,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['nDCG@10', 'Recall@10', 'Per-domain scores'],
     tags: ['retrieval', 'reranking', 'dynamic-tasks'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Audio ────────────────────────────────────────────────────────────────
@@ -400,7 +400,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['WER', 'Per-dataset WER', 'Real-time factor'],
     tags: ['asr', 'speech-to-text', 'wer'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'open-tts-leaderboard',
@@ -418,7 +418,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['MOS', 'Speaker similarity', 'Intelligibility'],
     tags: ['tts', 'text-to-speech', 'speech-synthesis'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Multimodal ───────────────────────────────────────────────────────────
@@ -438,7 +438,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Overall accuracy', 'Per-discipline accuracy', 'Per-modality accuracy'],
     tags: ['vision-language', 'college-level', 'reasoning'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'mmbench-leaderboard',
@@ -456,7 +456,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Overall score', 'Perception', 'Reasoning', 'Per-dimension accuracy'],
     tags: ['vision-language', 'fine-grained', 'circular-eval'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'seed-bench-leaderboard',
@@ -474,7 +474,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Image accuracy', 'Video accuracy', 'Per-dimension score'],
     tags: ['video', 'image-understanding', 'tencent'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'open-vlm-leaderboard',
@@ -492,7 +492,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Average score', 'VQA', 'OCR', 'Chart QA', 'Doc QA'],
     tags: ['vision-language', 'open-models', 'huggingface'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Inference ────────────────────────────────────────────────────────────
@@ -512,7 +512,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Throughput', 'Latency', 'Power efficiency', 'Per-category results'],
     tags: ['mlcommons', 'industry-standard', 'hardware'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'artificial-analysis-inference',
@@ -530,7 +530,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Output speed (tok/s)', 'TTFT', 'Price per 1M tokens', 'Context window'],
     tags: ['api', 'latency', 'throughput', 'cost'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'inferencex-dashboard',
@@ -548,7 +548,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Throughput (tok/s)', 'Latency percentiles', 'Cost per million tokens', 'Hardware efficiency'],
     tags: ['semianalysis', 'gpu', 'cost', 'frameworks'],
     status: 'active',
-    lastReviewed: '2026-08-13',
+    lastReviewed: '2026-08-17',
   },
 
   // ── LLM Routing ────────────────────────────────────────────────────────
@@ -567,7 +567,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Arena score', 'Accuracy', 'Cost per 1k queries', 'Optimal selection', 'Robustness', 'Latency'],
     tags: ['routing', 'llm-router', 'cost', 'leaderboard', 'arena'],
     status: 'active',
-    lastReviewed: '2026-08-13',
+    lastReviewed: '2026-08-17',
   },
 
   // ── Safety & Security ────────────────────────────────────────────────────
@@ -587,7 +587,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Attack success rate', 'Per-behavior robustness', 'Red-team method comparison'],
     tags: ['red-teaming', 'safety', 'robustness'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'salad-bench-leaderboard',
@@ -605,7 +605,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Attack success rate', 'Defense rate', 'Per-category safety score'],
     tags: ['safety', 'attack-defense', 'fine-grained'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
   {
     id: 'cyberseceval-leaderboard',
@@ -623,7 +623,7 @@ LANDSCAPE.leaderboards = [
     metrics: ['Insecure code rate', 'Attack compliance', 'Prompt injection success'],
     tags: ['cybersecurity', 'code-security', 'meta'],
     status: 'active',
-    lastReviewed: '2026-08-12',
+    lastReviewed: '2026-08-17',
   },
 ];
 
